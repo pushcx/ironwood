@@ -1,0 +1,32 @@
+. learn basics of ncurses
+. rename 'lighting' to 'visibility'
+* testing
+* learn basics of narray
+* data structure for the map
+. @ character that can move around and respect walls
+* player should remember previously-seen parts of the map
+. play with FOV
+* play with lighting effects
+* mobs
+* multiple maps
+* replace radius in FOV with masks to contrain angle
+* building generation
+
+Sometime:
+
+* add 'sable cape of night': http://scarygoround.com/?date=20040819
+* cape of invisibility that uses mana only when someone's looking
+* item that charges while player is 'hidden', defined as:
+  total distance travelled since last spot, * proximity
+* animations to magic (like nethack wand) or combat, etc
+* bloodstains
+* combos: regular movement interpreted as 
+  step forward 3 squares and attack straight or diag: 'charging'
+  attack, parry, attack: counterattack
+  attack, step diag, attack: sideswipe
+* do something special when player is one turn from detection or death
+* pauses - when you open the big chest, build tension by pausing a sec
+* rolling tension: prepare, combat, rest, repeat. maybe shorten to build
+
+
+* maybe a game about giving up possessions, owning less?

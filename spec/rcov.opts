@@ -1,0 +1,1 @@
+--exclude "$HOME/.gems,example/*,spec/*,gems/*"
