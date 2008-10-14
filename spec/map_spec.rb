@@ -6,7 +6,7 @@ module Ironwood
 
 describe 'simple map loading' do
 
-  before(:each) do
+  before :each do
     @map = StringMap.new(['.'])
   end
 
@@ -25,7 +25,7 @@ end
 
 describe "tile test map" do
 
-  before(:each) do
+  before :each do
     @map = StringMap.new([
       '.+',
       '~#',
@@ -64,7 +64,7 @@ end
 
 describe 'demo dungeon' do
 
-  before(:each) do
+  before :each do
     @map = StringMap.new([
       "##################################################",
       "#..#.........#.#.................................#",

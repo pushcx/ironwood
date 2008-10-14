@@ -1,6 +1,7 @@
 . learn basics of ncurses
 . rename 'lighting' to 'visibility'
-* testing
+. map spec
+* visibility spec
 * learn basics of narray
 * data structure for the map
 . @ character that can move around and respect walls

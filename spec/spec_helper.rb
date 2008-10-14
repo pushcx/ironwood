@@ -1,5 +1,8 @@
-$:.unshift File.join(File.dirname(__FILE__), "..")
+require 'rubygems'
 require 'yaml'
+
+$:.unshift File.join(File.dirname(__FILE__), "..")
+require 'constants'
 
 FIXTURES_DIR = File.join(File.dirname(__FILE__), "fixtures")
 
