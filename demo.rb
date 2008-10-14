@@ -6,6 +6,7 @@ $:.unshift "/home/harkins/code/ironwood"
 
 require 'rubygems'
 
+require 'constants'
 require 'rncurses'
 require 'map'
 
@@ -36,14 +37,14 @@ demo_dungeon = [
 ]
 
 movements = {
-  'k' => { :direction => 0, :x =>  0, :y => -1 },
-  'u' => { :direction => 1, :x =>  1, :y => -1 },
-  'l' => { :direction => 2, :x =>  1, :y =>  0 },
-  'n' => { :direction => 3, :x =>  1, :y =>  1 },
-  'j' => { :direction => 4, :x =>  0, :y =>  1 },
-  'b' => { :direction => 5, :x => -1, :y =>  1 },
-  'h' => { :direction => 6, :x => -1, :y =>  0 },
-  'y' => { :direction => 7, :x => -1, :y => -1 },
+  'k' => { :direction => DIR_N,  :x =>  0, :y => -1 },
+  'u' => { :direction => DIR_NE, :x =>  1, :y => -1 },
+  'l' => { :direction => DIR_E,  :x =>  1, :y =>  0 },
+  'n' => { :direction => DIR_SE, :x =>  1, :y =>  1 },
+  'j' => { :direction => DIR_S,  :x =>  0, :y =>  1 },
+  'b' => { :direction => DIR_SW, :x => -1, :y =>  1 },
+  'h' => { :direction => DIR_W,  :x => -1, :y =>  0 },
+  'y' => { :direction => DIR_NW, :x => -1, :y => -1 },
 }
 
 Ncurses.session do |screen|
