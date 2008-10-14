@@ -24,6 +24,19 @@ Sometime:
   step forward 3 squares and attack straight or diag: 'charging'
   attack, parry, attack: counterattack
   attack, step diag, attack: sideswipe
+  attack front, attack behind: double-play
+  stab from behind: backstab
+  several steps, attack at 90, step away: drive-by
+  arc: sword attack N also strikes NW and NE
+  enemy collapses, you attack: coup de grace
+  enemy flees, you step in and attack: merciless
+  attack several directions in turn: whirlwind
+  attack enemy against wall: cornering
+  alternate directions when moving toward/away: evasion
+  long weapon to hit two enemies in line: pierce
+  when touching, wait and then attack: power attack
+  move between two enemies, attack both: suprt slash
+* rage: stat that gains power the longer you're in combat, opens options
 * do something special when player is one turn from detection or death
 * pauses - when you open the big chest, build tension by pausing a sec
 * rolling tension: prepare, combat, rest, repeat. maybe shorten to build
