@@ -1,0 +1,37 @@
+The shadowcasting and some other early code based on Python code released to
+the public domain by Eric Burgess.
+
+An email confirming this (with email addresses spam-protected) is below.
+
+
+Message-ID: <9d0cc4f60810061058k16627eb7t30b074b874c334eb@mail.gmail.com>
+Date: Mon, 6 Oct 2008 12:58:06 -0500
+From: "Eric Burgess" <ericdb - at - gmail.com>
+To: "Peter Harkins" <ph - at - malaprop.org>
+Subject: Re: shadowcasting implementation
+
+Hi Peter,
+
+Thanks for asking.  I intend that code to be in the public domain, so by all
+means, please use and abuse it as you see fit.  If you come up with
+something good, either by using or improving it, I'd love to hear about it!
+
+Cheers,
+-Eric
+
+On Mon, Oct 6, 2008 at 7:51 AM, Peter Harkins <ph@malaprop.org> wrote:
+
+> Hi Eric,
+>
+> I saw the Python implementation of recursive shadowcasting you posted to
+> the Rogue Basin wiki*. Is that code in the public domain? I'm curious to
+> reuse it, but there's no note about whether it's allowed.
+>
+> Thanks for sharing it in any case, it's a nice example.
+>
+>
+> *
+> http://roguebasin.roguelikedevelopment.org/index.php?title=Python_shadowcasting_implementation
+>
+> --
+> Peter Harkins  -  http://push.cx  -  http://NearbyGamers.com
