@@ -78,6 +78,8 @@ module Visibility
   end
 
   module ShadowCasting90d
+    include ShadowCasting
+
     # Directions are numbered clockwise from N
     def calculate(radius)
       [@direction, (@direction - 1 + 8) % 8].each do |oct|
@@ -92,8 +94,8 @@ module Visibility
 
   class FieldOfView
     FOV_RADIUS = 12
-    include Visibility::ShadowCasting
-    #include Visibility::ShadowCasting90d
+    #include Visibility::ShadowCasting
+    include Visibility::ShadowCasting90d
 
     attr_reader :actor_x, :actor_y, :direction
 
