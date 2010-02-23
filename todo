@@ -10,8 +10,11 @@
 * play with lighting effects
 * mobs
 * multiple maps
-* replace radius in FOV with masks to contrain angle
 * building generation
+* test the FOV code
+* add Blinders to crop FOV by shape/radius
+* curses: plan tests
+* look at feature list of libcotd
 
 Sometime:
 
@@ -36,7 +39,7 @@ Sometime:
   alternate directions when moving toward/away: evasion
   long weapon to hit two enemies in line: pierce
   when touching, wait and then attack: power attack
-  move between two enemies, attack both: suprt slash
+  move between two enemies, attack both: spurt slash
 * rage: stat that gains power the longer you're in combat, opens options
 * do something special when player is one turn from detection or death
 * pauses - when you open the big chest, build tension by pausing a sec
