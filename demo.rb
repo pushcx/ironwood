@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'dispel'
+require 'pry'
 require 'yaml'
 
 require_relative 'constants'
@@ -52,6 +53,16 @@ Dispel::Screen.open(colors: true) do |screen|
   Dispel::Keyboard.output do |key| # main game loop
     exit if key == :"Ctrl+c" # escape to quit
     exit if key == :escape # escape to quit
+    if key == 'P'
+      Curses.echo
+      Curses.nl
+      Curses.close_screen
+      binding.pry
+      Curses.init_screen
+      Curses.noecho
+      Curses.nonl
+      screen.draw *game.display
+    end
     next if not movements.include? key
 
     change = movements[key]

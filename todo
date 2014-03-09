@@ -1,11 +1,11 @@
-. learn basics of ncurses
-. rename 'lighting' to 'visibility'
-. map spec
-. @ character that can move around and respect walls
-. play with FOV
-. get demo working with dispel + paint instead of ncurses
+x learn basics of ncurses
+x rename 'lighting' to 'visibility'
+x map spec
+x @ character that can move around and respect walls
+x play with FOV
+x get demo working with dispel + paint instead of ncurses
+x key to step into pry debugger
   lay out screen, player info, messages
-  key to step into pry debugger
   add Blinders to crop FOV by shape/radius
   visibility spec
   map windowing

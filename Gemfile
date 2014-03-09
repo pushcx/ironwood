@@ -6,4 +6,5 @@ gem 'curses'
 gem 'dispel'
 
 # testing
+gem 'pry'
 gem 'rspec'
