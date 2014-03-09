@@ -7,6 +7,7 @@ require 'yaml'
 require_relative 'constants'
 require_relative 'map'
 require_relative 'game'
+require_relative 'player'
 
 def d s
   $DEBUG = File.open('debug.log', 'a')
@@ -66,10 +67,10 @@ Dispel::Screen.open(colors: true) do |screen|
     next if not movements.include? key
 
     change = movements[key]
-    next if game.map.blocks_movement?(game.x + change[:x], game.y + change[:y])
-    game.direction = change[:direction]
-    game.x += change[:x]
-    game.y += change[:y]
+    next if game.map.blocks_movement?(game.player.x + change[:x], game.player.y + change[:y])
+    game.player.direction = change[:direction]
+    game.player.x += change[:x]
+    game.player.y += change[:y]
 
     screen.draw *game.display
   end

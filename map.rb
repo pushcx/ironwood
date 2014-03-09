@@ -32,8 +32,8 @@ class StringMap
   end
 
   # who calls this? View class for interface?
-  def fov_for_player x, y, direction
-    Visibility::FieldOfView.new(self, x, y, direction)
+  def fov_for_player player
+    Visibility::FieldOfView.new(self, player.x, player.y, player.direction)
   end
 
   def view fov
