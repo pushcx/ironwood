@@ -55,7 +55,6 @@ Dispel::Screen.open(colors: true) do |screen|
     next if not movements.include? key
 
     change = movements[key]
-    d key
     next if game.map.blocks_movement?(game.x + change[:x], game.y + change[:y])
     game.direction = change[:direction]
     game.x += change[:x]

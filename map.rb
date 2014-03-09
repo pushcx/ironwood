@@ -44,7 +44,19 @@ class StringMap
 
   def style_map fov
     style_map = Dispel::StyleMap.new(@height)
-    style_map.add(["#003243", "#33aa56"], 0, 1..4)
+    @height.times do |y|
+      @width.times do |x|
+        if x == fov.actor_x and y == fov.actor_y
+          style_map.add(["#dddddd", "#000001"], y, [x])
+        else
+          if fov.visible?(x, y)
+            style_map.add(["#ffffff", "#000000"], y, [x])
+          else
+            style_map.add(["#000000", "#000000"], y, [x])
+          end
+        end
+      end
+    end
     style_map
   end
 
