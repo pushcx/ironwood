@@ -1,4 +1,4 @@
-require 'visibility'
+require_relative 'visibility'
 
 module Ironwood
 
@@ -36,11 +36,21 @@ class StringMap
     Visibility::FieldOfView.new(self, x, y, direction)
   end
 
-  public
+  def view fov
+    str = @tiles
+    str[fov.actor_y][fov.actor_x] = '@'
+    str
+  end
 
-  # Display the map on an ncurses screen.
+  def style_map fov
+    style_map = Dispel::StyleMap.new(@height)
+    style_map.add(["#003243", "#33aa56"], 0, 1..4)
+    style_map
+  end
+
   def display(screen, fov)
-    dark, lit = Ncurses.COLOR_PAIR(8), Ncurses.COLOR_PAIR(7) | Ncurses::A_BOLD
+    #dark, lit = Ncurses.COLOR_PAIR(8), Ncurses.COLOR_PAIR(7) | Ncurses::A_BOLD
+    dark, lit = 0, 0
 
     @width.times do |x|
       @height.times do |y|
@@ -52,10 +62,11 @@ class StringMap
           c = tile(x, y)
           attr = fov.visible?(x, y) ? lit : dark
         end
-        screen.puts(c, :x => x, :y => y, :attrs => [attr])
+        screen.draw(c, [], [x,y])
+        #screen.puts(c, :x => x, :y => y, :attrs => [attr])
       end
     end
-    screen.attrset(lit)
+    #screen.attrset(lit)
 
     # print light map below
     #screen.attrset(lit)
@@ -66,7 +77,7 @@ class StringMap
     #    screen.mvaddstr(y + @height + 1, x, ch)
     #  end
     #end
-    screen.refresh()
+    #screen.refresh()
   end
 end
 

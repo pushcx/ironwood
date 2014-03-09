@@ -1,21 +1,18 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 
-# set up path if run from xinetd
-ENV['GEM_PATH'] = '/home/harkins/.gems'
-$:.unshift "/home/harkins/code/ironwood"
+require 'dispel'
+require 'yaml'
 
-require 'rubygems'
+require_relative 'constants'
+require_relative 'map'
+require_relative 'game'
 
-require 'constants'
-require 'rncurses'
-require 'map'
-
-class String
-  def ord
-    self.unpack('c')[0]
-  end
-end
-
+#class String
+#  def ord
+#    self.unpack('c')[0]
+#  end
+#end
+#
 
 module Ironwood
 
@@ -47,25 +44,29 @@ movements = {
   'y' => { :direction => DIR_NW, :x => -1, :y => -1 },
 }
 
-Ncurses.session do |screen|
-  x, y = 3, 12
-  direction = 0
-  map = StringMap.new(demo_dungeon)
-  fov = map.fov_for_player(x, y, direction)
+def self.d s
+  puts s
+end
 
-  while true # main game loop
-    fov.move(x, y, direction)
-    map.display(screen, fov)
-    key = screen.getch().chr
+map = StringMap.new(demo_dungeon)
+game = Game.new(map)
+Dispel::Screen.open(colors: true) do |screen|
+  Curses.curs_set(0)
 
-    break if key == "\033" # escape to quit
+  screen.draw "Ironwood", [], [0,0]
+  Dispel::Keyboard.output do |key| # main game loop
+    screen.draw *game.display
+
+    exit if key == :"Ctrl+c" # escape to quit
+    exit if key == :escape # escape to quit
     next if not movements.include? key
 
     change = movements[key]
-    next if map.blocks_movement?(x + change[:x], y + change[:y])
-    direction = change[:direction]
-    x += change[:x]
-    y += change[:y]
+    d change.to_yaml
+    next if game.map.blocks_movement?(game.x + change[:x], game.y + change[:y])
+    game.direction = change[:direction]
+    game.x += change[:x]
+    game.y += change[:y]
   end
 end
 

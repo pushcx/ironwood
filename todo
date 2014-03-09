@@ -3,7 +3,7 @@
 . map spec
 . @ character that can move around and respect walls
 . play with FOV
-  get demo working with dispel + paint instead of ncurses
+. get demo working with dispel + paint instead of ncurses
   lay out screen, player info, messages
   key to step into pry debugger
   add Blinders to crop FOV by shape/radius
