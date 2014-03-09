@@ -7,12 +7,11 @@ require_relative 'constants'
 require_relative 'map'
 require_relative 'game'
 
-#class String
-#  def ord
-#    self.unpack('c')[0]
-#  end
-#end
-#
+def d s
+  $DEBUG = File.open('debug.log', 'a')
+  $DEBUG.puts s
+  $DEBUG.flush
+end
 
 module Ironwood
 
@@ -44,10 +43,6 @@ movements = {
   'y' => { :direction => DIR_NW, :x => -1, :y => -1 },
 }
 
-def self.d s
-  puts s
-end
-
 map = StringMap.new(demo_dungeon)
 game = Game.new(map)
 Dispel::Screen.open(colors: true) do |screen|
@@ -55,18 +50,18 @@ Dispel::Screen.open(colors: true) do |screen|
 
   screen.draw "Ironwood", [], [0,0]
   Dispel::Keyboard.output do |key| # main game loop
-    screen.draw *game.display
-
     exit if key == :"Ctrl+c" # escape to quit
     exit if key == :escape # escape to quit
     next if not movements.include? key
 
     change = movements[key]
-    d change.to_yaml
+    d key
     next if game.map.blocks_movement?(game.x + change[:x], game.y + change[:y])
     game.direction = change[:direction]
     game.x += change[:x]
     game.y += change[:y]
+
+    screen.draw *game.display
   end
 end
 

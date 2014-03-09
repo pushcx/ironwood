@@ -37,7 +37,7 @@ class StringMap
   end
 
   def view fov
-    str = @tiles
+    str = @tiles.map { |s| s.clone }
     str[fov.actor_y][fov.actor_x] = '@'
     str
   end
