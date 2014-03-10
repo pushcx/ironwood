@@ -24,6 +24,8 @@ class Game
   end
 
   def view
+    # there's a bug here, somewhere, where an extra line of map is being drawn
+    # at the bottom whenever the player moves SW, S, or SE
     [
       status_bar.view(self),
       map_display.view,

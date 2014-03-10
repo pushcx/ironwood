@@ -16,6 +16,19 @@ class MapDisplay
     mobs.player
   end
 
+  def viewport_tiles
+    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
+      next if y < 0 or y >= map.height
+      ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
+        next if x < 0 or x >= map.width
+
+        col, row = xy_to_colrow x, y
+        yield x, y, col, row
+      end
+    end
+
+  end
+
   def xy_to_colrow x, y
     return (x - player.fov.actor_x) + (width / 2), (y - player.fov.actor_y) + (height / 2)
   end
@@ -24,21 +37,16 @@ class MapDisplay
     map_memory.add player.fov
     lines = []
     # first pass, lay down the terrain
-    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
-      lines << ' ' * width
-      next if y < 0 or y >= map.height
-      ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
-        next if x < 0 or x >= map.width
-
-        col, row = xy_to_colrow x, y
-
-        if player.fov.visible?(x, y)
-          lines[row][col] = map.tile(x, y)
-        elsif map_memory.remember?(x, y)
-          lines[row][col] = map_memory.tile(x, y)
-        end
+    viewport_tiles do |x, y, col, row|
+      #d "#{x},#{y} -> #{col},#{row}"
+      lines[row] ||= ' ' * width
+      if player.fov.visible?(x, y)
+        lines[row][col] = map.tile(x, y)
+      elsif map_memory.remember?(x, y)
+        lines[row][col] = map_memory.tile(x, y)
       end
     end
+
     # second pass, add mobs
     mobs.each do |mob|
       if player.fov.visible? mob.x, mob.y
@@ -53,39 +61,27 @@ class MapDisplay
   def style_map
     style_map = Dispel::StyleMap.new(height)
     # first pass, highlight the terrain
-    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
-      next if y < 0 or y >= map.height
-      ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
-        next if x < 0 or x >= map.width
-        col, row = xy_to_colrow x, y
-
-        if player.fov.visible?(x, y)
-          if mobs.mob_at? x, y
-            mob = mobs.mob_at x, y
-            style_map.add([mob.color, "#000000"], row, [col])
-          else
-            style_map.add(["#ffffff", "#000000"], row, [col])
-          end
-        elsif map_memory.remember?(x, y)
-          style_map.add(["#666666", "#000000"], row, [col])
+    viewport_tiles do |x, y, col, row|
+      if player.fov.visible?(x, y)
+        if mobs.mob_at? x, y
+          mob = mobs.mob_at x, y
+          style_map.add([mob.color, "#000000"], row, [col])
         else
-          style_map.add(["#000000", "#000000"], row, [col])
+          style_map.add(["#ffffff", "#000000"], row, [col])
         end
+      elsif map_memory.remember?(x, y)
+        style_map.add(["#666666", "#000000"], row, [col])
+      else
+        style_map.add(["#000000", "#000000"], row, [col])
       end
     end
     # second pass, highlight mobvision
     mobs.each do |mob|
       next if mob.player?
       next unless player.fov.visible? mob.x, mob.y
-      ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
-        next if y < 0 or y >= map.height
-        ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
-          next if x < 0 or x >= map.width
-
-          col, row = xy_to_colrow x, y
-          if mob.fov.visible?(x, y) and map_memory.remember?(x, y)
-            style_map.add([mob.color, '#000000'], row, [col])
-          end
+      viewport_tiles do |x, y, col, row|
+        if mob.fov.visible?(x, y) and map_memory.remember?(x, y)
+          style_map.add([mob.color, '#000000'], row, [col])
         end
       end
     end
