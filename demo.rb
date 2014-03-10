@@ -54,6 +54,7 @@ movements = {
 map = StringMap.new(demo_dungeon)
 Dispel::Screen.open(colors: true) do |screen|
   game = Game.new(map, screen.columns, screen.lines)
+  #game = Game.new(map, 5,5)
   Curses.curs_set(0)
 
   screen.draw "Ironwood", [], [0,0]
@@ -80,6 +81,8 @@ Dispel::Screen.open(colors: true) do |screen|
       game.player.y += change[:y]
     end
 
+    # wipe screen - dispel has a bug where it sometimes leaves the last line
+    screen.draw ([' ' * screen.columns] * (screen.lines - 1)).join("\n"), [], [0, 1]
     screen.draw *game.display
   end
 end

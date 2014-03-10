@@ -17,7 +17,7 @@ class MapDisplay
   end
 
   def viewport_tiles
-    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
+    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2) - 1)).each do |y|
       next if y < 0 or y >= map.height
       ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
         next if x < 0 or x >= map.width
@@ -51,6 +51,7 @@ class MapDisplay
     mobs.each do |mob|
       if player.fov.visible? mob.x, mob.y
         col, row = xy_to_colrow mob.x, mob.y
+        next if col < 0 or col >= width or row < 0 or row >= height
         lines[row][col] = mob.tile
       end
     end
