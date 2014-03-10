@@ -1,9 +1,14 @@
+require_relative 'movement'
+
 module Ironwood
 
 class Mob
-  attr_accessor :x, :y, :direction, :fov
+  include Movement
+
+  attr_accessor :map, :x, :y, :direction, :fov
 
   def initialize map, x, y, direction
+    @map = map
     @x = x
     @y = y
     @direction = direction
@@ -12,7 +17,7 @@ class Mob
 
   def player? ; false ; end
   def tile ; '‽' ; end
-  def color ; '#ff0000' ; end
+  def color ; '#800080' ; end
 end
 
 end # Ironwood

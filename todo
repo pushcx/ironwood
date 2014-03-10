@@ -11,7 +11,9 @@ x player memory of previously-seen parts of the map
 x time system
 x guards that stand still
 x show guard attention
-  guards spotting you and chasing
+x guards spotting you and chasing
+  guard catching you = game over
+  guard remembering where player was and investigating
   guards that wander buildings
   guards hearing you - move + rest
   guards calling to other guards

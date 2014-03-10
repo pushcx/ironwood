@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'dispel'
+require 'state_machine'
 require 'pry'
 require 'yaml'
 
@@ -40,15 +41,15 @@ demo_dungeon = [
   "##################################################"
 ]
 
-movements = {
-  'k' => { :direction => DIR_N,  :x =>  0, :y => -1 },
-  'u' => { :direction => DIR_NE, :x =>  1, :y => -1 },
-  'l' => { :direction => DIR_E,  :x =>  1, :y =>  0 },
-  'n' => { :direction => DIR_SE, :x =>  1, :y =>  1 },
-  'j' => { :direction => DIR_S,  :x =>  0, :y =>  1 },
-  'b' => { :direction => DIR_SW, :x => -1, :y =>  1 },
-  'h' => { :direction => DIR_W,  :x => -1, :y =>  0 },
-  'y' => { :direction => DIR_NW, :x => -1, :y => -1 },
+keys_to_directions = {
+  'k' =>  DIR_N,
+  'u' =>  DIR_NE,
+  'l' =>  DIR_E,
+  'n' =>  DIR_SE,
+  'j' =>  DIR_S,
+  'b' =>  DIR_SW,
+  'h' =>  DIR_W,
+  'y' =>  DIR_NW,
 }
 
 map = StringMap.new(demo_dungeon)
@@ -71,15 +72,12 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.noecho
       Curses.nonl
     when ' '
-      game.time.advance
-    when *movements.keys
-      game.time.advance
-      change = movements[key]
-      to_x, to_y = game.player.x + change[:x], game.player.y + change[:y]
-      next if game.map.blocks_movement?(to_x, to_y)
-      game.player.direction = change[:direction]
-      game.player.x = to_x
-      game.player.y = to_y
+      game.turn
+    when *keys_to_directions.keys
+      direction = keys_to_directions[key]
+      next unless game.player.can_move? direction
+      game.player.move direction
+      game.turn
     end
 
     # wipe screen - dispel has a bug where it sometimes leaves the last line

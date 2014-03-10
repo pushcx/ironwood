@@ -13,9 +13,18 @@ class Game
     @mobs = Mobs.new([
       @player,
       StandingGuard.new(map, 5, 5, DIR_W),
-      StandingGuard.new(map, 8, 5, DIR_E),
+      #StandingGuard.new(map, 8, 5, DIR_E),
     ])
     @map_display = MapDisplay.new(map, mobs, screen_width, screen_height - 1)
+  end
+
+  def turn
+    mobs.each do |mob|
+      next if mob.player?
+      mob.set_state(player)
+      mob.turn(player)
+    end
+    time.advance
   end
 
   def display
