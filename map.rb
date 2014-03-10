@@ -16,8 +16,13 @@ class StringMap
   # Returns the tile at coordinates x, y.
   # Tiles must eventually be their own objects.
   def tile(x, y)
-    raise IndexError, "x #{x} out of range" unless (0..@width).include? x
-    raise IndexError, "y #{y} out of range" unless (0..@height).include? y
+    raise IndexError, "x #{x} out of range" unless (0..@width-1).include? x
+    raise IndexError, "y #{y} out of range" unless (0..@height-1).include? y
+    return @tiles[y][x].chr
+  end
+
+  def crop_tile(x, y)
+    return ' '.chr unless (0..@width-1).include?(x) and (0..@height-1).include?(y)
     return @tiles[y][x].chr
   end
 
@@ -34,6 +39,18 @@ class StringMap
   # who calls this? View class for interface?
   def fov_for_player player
     Visibility::FieldOfView.new(self, player.x, player.y, player.direction)
+  end
+
+  def crop x, y, width, height
+    lines = []
+    (y..(y + height - 1)).each do |y|
+      row = ''
+      (x..(x + width - 1)).each do |x|
+        row << crop_tile(x, y)
+      end
+      lines << row
+    end
+    lines
   end
 
   def view fov

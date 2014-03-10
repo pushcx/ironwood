@@ -1,12 +1,13 @@
 module Ironwood
 
 class Game
-  attr_accessor :map, :player, :fov
+  attr_accessor :map, :player, :fov, :map_display
 
-  def initialize(map)
+  def initialize(map, screen_width, screen_height)
     @map = map
     @player = Player.new 3, 12, 0
     @fov = map.fov_for_player(player)
+    @map_display = MapDisplay.new(map, fov, screen_width, screen_height - 1)
   end
 
   def display
@@ -17,13 +18,13 @@ class Game
   def view
     [
       player.view,
-      map.view(fov),
+      map_display.view,
       #messages.view,
     ].join("\n")
   end
 
   def style_map
-    player.style_map() + map.style_map(fov)
+    player.style_map + map_display.style_map
   end
 end
 

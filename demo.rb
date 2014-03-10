@@ -5,8 +5,9 @@ require 'pry'
 require 'yaml'
 
 require_relative 'constants'
-require_relative 'map'
 require_relative 'game'
+require_relative 'map'
+require_relative 'map_display'
 require_relative 'player'
 
 def d s
@@ -46,8 +47,8 @@ movements = {
 }
 
 map = StringMap.new(demo_dungeon)
-game = Game.new(map)
 Dispel::Screen.open(colors: true) do |screen|
+  game = Game.new(map, screen.columns, screen.lines)
   Curses.curs_set(0)
 
   screen.draw "Ironwood", [], [0,0]

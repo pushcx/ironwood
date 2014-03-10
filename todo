@@ -6,11 +6,8 @@ x play with FOV
 x get demo working with dispel + paint instead of ncurses
 x key to step into pry debugger
 x lay out screen, player info, messages
-  add Blinders to crop FOV by shape/radius
-  visibility spec
-  map windowing
+x map panning and cropping
   game save: save and load map + memory
-  play with lighting effects
   player memory of previously-seen parts of the map
   multiple floors
   door open/closing
@@ -39,6 +36,10 @@ x lay out screen, player info, messages
 
 after this week:
   store map in narray
+  add Blinders to crop FOV by shape/radius
+  visibility spec
+  screen resizing
+  play with 256 color lighting effects
 
 Fun ideas:
   add 'sable cape of night': http://scarygoround.com/sgr/ar.php?date=20040819
