@@ -10,6 +10,8 @@ require_relative 'map'
 require_relative 'map_display'
 require_relative 'map_memory'
 require_relative 'player'
+require_relative 'status_bar'
+require_relative 'game_time'
 
 def d s
   $DEBUG = File.open('debug.log', 'a')
@@ -54,9 +56,10 @@ Dispel::Screen.open(colors: true) do |screen|
 
   screen.draw "Ironwood", [], [0,0]
   Dispel::Keyboard.output do |key| # main game loop
-    exit if key == :"Ctrl+c" # escape to quit
-    exit if key == :escape # escape to quit
-    if key == 'P'
+    case key
+    when :"Ctrl+c"
+      exit
+    when 'P'
       Curses.echo
       Curses.nl
       Curses.close_screen
@@ -65,16 +68,18 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.noecho
       Curses.nonl
       screen.draw *game.display
+    when ' '
+      game.time.advance
+    when *movements.keys
+      game.time.advance
+      change = movements[key]
+      next if game.map.blocks_movement?(game.player.x + change[:x], game.player.y + change[:y])
+      game.player.direction = change[:direction]
+      game.player.x += change[:x]
+      game.player.y += change[:y]
+
+      screen.draw *game.display
     end
-    next if not movements.include? key
-
-    change = movements[key]
-    next if game.map.blocks_movement?(game.player.x + change[:x], game.player.y + change[:y])
-    game.player.direction = change[:direction]
-    game.player.x += change[:x]
-    game.player.y += change[:y]
-
-    screen.draw *game.display
   end
 end
 

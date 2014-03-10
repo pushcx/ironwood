@@ -8,9 +8,7 @@ x key to step into pry debugger
 x lay out screen, player info, messages
 x map panning and cropping
 x player memory of previously-seen parts of the map
-  multiple floors
-  time system
-  lanterns (affixed) and torches (portable)
+x time system
   night and day
   guards that wander buildings
   guards spotting you and chasing
@@ -21,10 +19,12 @@ x player memory of previously-seen parts of the map
   instructions on opening screen
 
   door open/closing
+  multiple floors
   world generation
   noisemakers
   door locking, unlocking, picking
 
+  lanterns (affixed) and torches (portable)
   combat combos
   citizens that wander
   citizens that sleep

@@ -1,10 +1,12 @@
 module Ironwood
 
 class Game
-  attr_accessor :map, :player, :fov, :map_display
+  attr_accessor :status_bar, :map, :time, :player, :fov, :map_display
 
   def initialize(map, screen_width, screen_height)
+    @status_bar = StatusBar.new(self)
     @map = map
+    @time = GameTime.new
     @player = Player.new 3, 12, 0
     @map_memory = MapMemory.new(map)
     @fov = map.fov_for_player(player)
@@ -18,14 +20,14 @@ class Game
 
   def view
     [
-      player.view,
+      status_bar.view(self),
       map_display.view,
       #messages.view,
     ].join("\n")
   end
 
   def style_map
-    player.style_map + map_display.style_map
+    status_bar.style_map + map_display.style_map
   end
 end
 
