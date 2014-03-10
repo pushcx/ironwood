@@ -88,6 +88,21 @@ module Visibility
     end
   end
 
+  module ShadowCasting180d
+    include ShadowCasting
+
+    # Directions are numbered clockwise from N
+    def calculate(radius)
+      [
+        @direction,
+        (@direction + 1 + 8) % 8,
+        (@direction - 1 + 8) % 8,
+        (@direction - 2 + 8) % 8,
+      ].each do |oct|
+        render_octant oct, radius
+      end
+    end
+  end
 
   # Tracks what portion of a map is visible to an actor.
   # Currently data is stored as an array (rows) of arrays (cols) of integers (tiles).
@@ -95,12 +110,14 @@ module Visibility
   class FieldOfView
     FOV_RADIUS = 12
     #include Visibility::ShadowCasting
-    include Visibility::ShadowCasting90d
+    #include Visibility::ShadowCasting90d
+    #include Visibility::ShadowCasting180d
 
     attr_reader :actor_x, :actor_y, :direction
 
     # Pass in a Map of area to do visibility in
-    def initialize(map, x, y, direction)
+    def initialize(map, x, y, direction, calculator)
+      singleton_class.send(:include, calculator)
       @map = map
       @data = (0...@map.height).collect { |i| [0] * @map.width }
       @step = 0

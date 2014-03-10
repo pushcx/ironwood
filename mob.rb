@@ -12,7 +12,7 @@ class Mob
     @x = x
     @y = y
     @direction = direction
-    @fov = Visibility::FieldOfView.new(map, x, y, direction)
+    @fov = Visibility::FieldOfView.new(map, x, y, direction, Visibility::ShadowCasting90d)
   end
 
   def player? ; false ; end
