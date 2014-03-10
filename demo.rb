@@ -75,10 +75,11 @@ Dispel::Screen.open(colors: true) do |screen|
     when *movements.keys
       game.time.advance
       change = movements[key]
-      next if game.map.blocks_movement?(game.player.x + change[:x], game.player.y + change[:y])
+      to_x, to_y = game.player.x + change[:x], game.player.y + change[:y]
+      next if game.map.blocks_movement?(to_x, to_y)
       game.player.direction = change[:direction]
-      game.player.x += change[:x]
-      game.player.y += change[:y]
+      game.player.x = to_x
+      game.player.y = to_y
     end
 
     # wipe screen - dispel has a bug where it sometimes leaves the last line
