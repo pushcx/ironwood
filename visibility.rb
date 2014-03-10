@@ -109,7 +109,7 @@ module Visibility
 
     # Test if a tile is visible.
     def visible? x, y
-      @data[y][x] == @step
+      @data[y][x] == @step or (x == actor_x and y == actor_y)
     end
 
     # For debugging only

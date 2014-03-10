@@ -54,16 +54,13 @@ class MapDisplay
       ((fov.actor_x - (width / 2))..(fov.actor_x + (width / 2))).each do |x|
         col += 1
         next if x < 0 or x >= map.width
-        if x == fov.actor_x and y == fov.actor_y
-          style_map.add(["#dddddd", "#000001"], row, [col])
+
+        if fov.visible?(x, y)
+          style_map.add(["#ffffff", "#000000"], row, [col])
+        elsif map_memory.remember?(x, y)
+          style_map.add(["#666666", "#000000"], row, [col])
         else
-          if fov.visible?(x, y)
-            style_map.add(["#ffffff", "#000000"], row, [col])
-          elsif map_memory.remember?(x, y)
-            style_map.add(["#666666", "#000000"], row, [col])
-          else
-            style_map.add(["#000000", "#000000"], row, [col])
-          end
+          style_map.add(["#000000", "#000000"], row, [col])
         end
       end
     end
