@@ -10,6 +10,7 @@ class Mob
     @fov = Visibility::FieldOfView.new(map, x, y, direction)
   end
 
+  def player? ; false ; end
   def tile ; '‽' ; end
   def color ; '#ff0000' ; end
 end

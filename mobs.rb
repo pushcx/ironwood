@@ -8,11 +8,15 @@ class Mobs
     @list = list
   end
 
+  def each(&block)
+    list.each(&block)
+  end
+
   def player
     list.each do |mob|
-      return mob if mob.is_a? Player
+      return mob if mob.player?
     end
-    nil
+    raise "Looked for player, didn't find"
   end
 
   def mob_at x, y

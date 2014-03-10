@@ -10,9 +10,9 @@ x map panning and cropping
 x player memory of previously-seen parts of the map
 x time system
 x guards that stand still
-  show guard attention
-  guards that wander buildings
+x show guard attention
   guards spotting you and chasing
+  guards that wander buildings
   guards hearing you - move + rest
   guards calling to other guards
   blackjack knocking out guards (silent and noisy)
