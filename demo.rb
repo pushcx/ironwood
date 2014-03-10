@@ -13,9 +13,9 @@ require_relative 'player'
 require_relative 'status_bar'
 require_relative 'game_time'
 
-def d s
+def d *s
   $DEBUG = File.open('debug.log', 'a')
-  $DEBUG.puts s
+  $DEBUG.puts *s
   $DEBUG.flush
 end
 
@@ -67,7 +67,6 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.init_screen
       Curses.noecho
       Curses.nonl
-      screen.draw *game.display
     when ' '
       game.time.advance
     when *movements.keys
@@ -77,9 +76,9 @@ Dispel::Screen.open(colors: true) do |screen|
       game.player.direction = change[:direction]
       game.player.x += change[:x]
       game.player.y += change[:y]
-
-      screen.draw *game.display
     end
+
+    screen.draw *game.display
   end
 end
 
