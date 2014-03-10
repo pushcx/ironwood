@@ -8,7 +8,6 @@ x key to step into pry debugger
 x lay out screen, player info, messages
 x map panning and cropping
 x player memory of previously-seen parts of the map
-  game save: save and load map + memory
   multiple floors
   time system
   lanterns (affixed) and torches (portable)
@@ -41,6 +40,7 @@ after this week:
   visibility spec
   screen resizing
   play with 256 color lighting effects
+  game save: save and load map, player, memory...
 
 Fun ideas:
   add 'sable cape of night': http://scarygoround.com/sgr/ar.php?date=20040819
