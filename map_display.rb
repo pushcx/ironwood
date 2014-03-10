@@ -2,6 +2,7 @@ module Ironwood
 
 class MapDisplay
   attr_reader :map, :fov, :map_memory, :width, :height
+  attr_accessor :mobs
 
   def initialize map, fov, width, height
     @map = map
@@ -9,6 +10,7 @@ class MapDisplay
     @map_memory = MapMemory.new(map)
     @width = width
     @height = height
+    @mobs = Mobs.new
   end
 
   def crop_dimensions
@@ -33,13 +35,16 @@ class MapDisplay
         col += 1
         next if x < 0 or x >= map.width
         if fov.visible?(x, y)
-          lines[row][col] = map.tile(x, y)
+          if mobs.mob_at? x, y
+            lines[row][col] = mobs.mob_at(x, y).tile
+          else
+            lines[row][col] = map.tile(x, y)
+          end
         elsif map_memory.remember?(x, y)
           lines[row][col] = map_memory.tile(x, y)
         end
       end
     end
-    lines[(height / 2)][(width / 2)] = '@'
     lines
   end
 
@@ -56,7 +61,12 @@ class MapDisplay
         next if x < 0 or x >= map.width
 
         if fov.visible?(x, y)
-          style_map.add(["#ffffff", "#000000"], row, [col])
+          if mobs.mob_at? x, y
+            mob = mobs.mob_at x, y
+            style_map.add([mob.color, "#000000"], row, [col])
+          else
+            style_map.add(["#ffffff", "#000000"], row, [col])
+          end
         elsif map_memory.remember?(x, y)
           style_map.add(["#666666", "#000000"], row, [col])
         else

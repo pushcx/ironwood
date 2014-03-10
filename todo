@@ -9,7 +9,7 @@ x lay out screen, player info, messages
 x map panning and cropping
 x player memory of previously-seen parts of the map
 x time system
-  night and day
+x guards that stand still
   guards that wander buildings
   guards spotting you and chasing
   guards hearing you - move + rest
@@ -33,6 +33,7 @@ x time system
   hibernating
   armor
   weapons
+  night and day
 
 after this week:
   store map in narray

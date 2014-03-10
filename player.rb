@@ -1,13 +1,10 @@
+require_relative 'mob'
+
 module Ironwood
 
-class Player
-  attr_accessor :x, :y, :direction
-
-  def initialize x, y, direction
-    @x = x
-    @y = y
-    @direction = direction
-  end
+class Player < Mob
+  def tile ; '@' ; end
+  def color ; '#9999ff' ; end
 end
 
 end # Ironwood
