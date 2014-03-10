@@ -4,37 +4,31 @@ class MapDisplay
   attr_reader :map, :fov, :map_memory, :width, :height
   attr_accessor :mobs
 
-  def initialize map, fov, width, height
+  def initialize map, mobs, width, height
     @map = map
-    @fov = fov
     @map_memory = MapMemory.new(map)
     @width = width
     @height = height
-    @mobs = Mobs.new
+    @mobs = mobs
   end
 
-  def crop_dimensions
-    [
-      fov.actor_x - (width / 2),
-      fov.actor_y - (height / 2),
-      width,
-      height,
-    ]
+  def player
+    mobs.player
   end
 
   def view
-    map_memory.add fov
+    map_memory.add player.fov
     lines = []
     row = -1
-    ((fov.actor_y - (height / 2))..(fov.actor_y + (height / 2))).each do |y|
+    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
       row += 1
       col = -1
       lines << ' ' * width
       next if y < 0 or y >= map.height
-      ((fov.actor_x - (width / 2))..(fov.actor_x + (width / 2))).each do |x|
+      ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
         col += 1
         next if x < 0 or x >= map.width
-        if fov.visible?(x, y)
+        if player.fov.visible?(x, y)
           if mobs.mob_at? x, y
             lines[row][col] = mobs.mob_at(x, y).tile
           else
@@ -52,15 +46,15 @@ class MapDisplay
   def style_map
     style_map = Dispel::StyleMap.new(height)
     row = -1
-    ((fov.actor_y - (height / 2))..(fov.actor_y + (height / 2))).each do |y|
+    ((player.fov.actor_y - (height / 2))..(player.fov.actor_y + (height / 2))).each do |y|
       row += 1
       col = -1
       next if y < 0 or y >= map.height
-      ((fov.actor_x - (width / 2))..(fov.actor_x + (width / 2))).each do |x|
+      ((player.fov.actor_x - (width / 2))..(player.fov.actor_x + (width / 2))).each do |x|
         col += 1
         next if x < 0 or x >= map.width
 
-        if fov.visible?(x, y)
+        if player.fov.visible?(x, y)
           if mobs.mob_at? x, y
             mob = mobs.mob_at x, y
             style_map.add([mob.color, "#000000"], row, [col])
