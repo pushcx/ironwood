@@ -2,18 +2,20 @@ module Ironwood
 
 class Game
   attr_accessor :status_bar, :map, :time, :player, :map_display, :mobs
+  attr_reader :game_over
 
   def initialize(map, screen_width, screen_height)
     @status_bar = StatusBar.new(self)
     @map = map
     @time = GameTime.new
-    @player = Player.new map, 3, 12, DIR_N
+    @player = Player.new map, 4, 12, DIR_N
     @map_memory = MapMemory.new(map)
+    @game_over = false
 
     @mobs = Mobs.new([
       @player,
       StandingGuard.new(map, 5, 5, DIR_W),
-      #StandingGuard.new(map, 8, 5, DIR_E),
+      StandingGuard.new(map, 8, 5, DIR_E),
     ])
     @map_display = MapDisplay.new(map, mobs, screen_width, screen_height - 1)
   end
@@ -23,6 +25,8 @@ class Game
       next if mob.player?
       mob.set_state(player)
       mob.turn(player)
+
+      @game_over = true if mob.x == player.x and mob.y == player.y
     end
     time.advance
   end

@@ -12,12 +12,12 @@ x time system
 x guards that stand still
 x show guard attention
 x guards spotting you and chasing
-  guard catching you = game over
+x guard catching you = game over
+  guards hearing you - move + rest
+  blackjack knocking out guards (silent and noisy)
   guard remembering where player was and investigating
   guards that wander buildings
-  guards hearing you - move + rest
   guards calling to other guards
-  blackjack knocking out guards (silent and noisy)
   dragging bodies
   instructions on opening screen
 

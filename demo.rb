@@ -60,6 +60,7 @@ Dispel::Screen.open(colors: true) do |screen|
 
   screen.draw "Ironwood", [], [0,0]
   Dispel::Keyboard.output do |key| # main game loop
+    exit if game.game_over
     case key
     when :"Ctrl+c"
       exit
@@ -83,6 +84,11 @@ Dispel::Screen.open(colors: true) do |screen|
     # wipe screen - dispel has a bug where it sometimes leaves the last line
     screen.draw ([' ' * screen.columns] * (screen.lines - 1)).join("\n"), [], [0, 1]
     screen.draw *game.display
+
+    if game.game_over
+      screen.draw "Game Over - a guard caught you", Dispel::StyleMap.single_line_reversed(screen.columns), [0,0]
+    end
+
   end
 end
 
