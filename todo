@@ -7,10 +7,9 @@ x get demo working with dispel + paint instead of ncurses
 x key to step into pry debugger
 x lay out screen, player info, messages
 x map panning and cropping
+x player memory of previously-seen parts of the map
   game save: save and load map + memory
-  player memory of previously-seen parts of the map
   multiple floors
-  door open/closing
   time system
   lanterns (affixed) and torches (portable)
   night and day
@@ -20,7 +19,9 @@ x map panning and cropping
   guards calling to other guards
   blackjack knocking out guards (silent and noisy)
   dragging bodies
+  instructions on opening screen
 
+  door open/closing
   world generation
   noisemakers
   door locking, unlocking, picking

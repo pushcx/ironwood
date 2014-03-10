@@ -8,6 +8,7 @@ require_relative 'constants'
 require_relative 'game'
 require_relative 'map'
 require_relative 'map_display'
+require_relative 'map_memory'
 require_relative 'player'
 
 def d s

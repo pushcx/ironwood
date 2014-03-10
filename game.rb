@@ -6,6 +6,7 @@ class Game
   def initialize(map, screen_width, screen_height)
     @map = map
     @player = Player.new 3, 12, 0
+    @map_memory = MapMemory.new(map)
     @fov = map.fov_for_player(player)
     @map_display = MapDisplay.new(map, fov, screen_width, screen_height - 1)
   end
