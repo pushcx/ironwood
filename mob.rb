@@ -25,6 +25,11 @@ class Mob
     last_actions.shift while last_actions.count > 3
   end
 
+  def noise_count
+    # [:move, :rest, :move] is 1, not 2, so this is more complicated than select
+    last_actions.reverse.inject(0) { |c, a| return c if a != :move; c + 1 }
+  end
+
   def noisy?
     last_actions == [:move, :move, :move]
   end
