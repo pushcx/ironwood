@@ -34,15 +34,22 @@ module Movement
     self.x, self.y = dest(direction)
   end
 
-  def walk_towards x, y
+  def direction_to x, y
     delta_x = delta_y = 0
     delta_x += 1 if x > self.x
     delta_x -= 1 if x < self.x
     delta_y += 1 if y > self.y
     delta_y -= 1 if y < self.y
     #d "at (#{self.x},#{self.y}) want (#{x},#{y}) delta_x #{delta_x} delta_y #{delta_y}"
-    direction = DELTAS.select { |dir, d| d[0] == delta_x and d[1] == delta_y }.keys.first
-    move(direction)
+    DELTAS.select { |dir, d| d[0] == delta_x and d[1] == delta_y }.keys.first
+  end
+
+  def direction_offset(direction, offset)
+    (direction + offset + 8) % 8
+  end
+
+  def walk_towards x, y
+    move(direction_to x, y)
   end
 end
 
