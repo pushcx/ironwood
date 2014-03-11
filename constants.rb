@@ -1,6 +1,6 @@
 module Ironwood
 
-  HEARING_RADIUS = 7
+  HEARING_RADIUS = 15
 
   DIR_N  = 0
   DIR_NE = 1

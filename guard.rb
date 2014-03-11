@@ -23,16 +23,18 @@ class StandingGuard < Mob
 
   def spot? player
     return false unless fov.visible? player.x, player.y
+    #d " - spot at #{player.x},#{player.y}"
     @dest_x, @dest_y = player.x, player.y
     hunt! unless hunting?
     true
   end
 
   def hear? player
-    return true if hunting?
     return false unless player.noisy? and can_hear_to? player.x, player.y
-    hunt!
+    #d " - hear at #{player.x},#{player.y}"
     @dest_x, @dest_y = player.x, player.y
+    hunt! unless hunting?
+    true
   end
 
   def decide_state(player)
@@ -66,12 +68,9 @@ class StandingGuard < Mob
       end
 
       def decide_arrived?
-        if x == post_x and y == post_y
-          stand_guard!
-          self.direction = post_direction
-        end
-        if x == dest_x and y == dest_x
-          order_walk!
+        #d "  - hunting:decide_arrived? #{x},#{y} #{@dest_x},#{@dest_y}"
+        if at_destination?
+          lost_player!
           @dest_x, @dest_y = post_x, post_y
         end
       end
@@ -85,12 +84,25 @@ class StandingGuard < Mob
       end
 
       def decide_arrived?
-        if x == dest_x and y == dest_x
-          lost_player!
-          @dest_x, @dest_y = post_x, post_y
+        if at_destination?
+          if at_post?
+            stand_guard!
+            self.direction = post_direction
+          else
+            order_walk!
+            @dest_x, @dest_y = post_x, post_y
+          end
         end
       end
     end
+  end
+
+  def at_destination?
+    x == @dest_x and y == @dest_y
+  end
+
+  def at_post?
+    x == @dest_x and y == @dest_y
   end
 
   state_machine :walk_cycle_state, initial: :move do

@@ -30,7 +30,9 @@ class Game
 
     map.mobs.enemies.each do |mob|
       mob.decide_state(player)
+      #d " - chose #{mob.state}, dest #{mob.dest_x},#{mob.dest_y}"
       mob.turn
+      #d " - finished at #{mob.x},#{mob.y}"
 
       @game_over = true if map.mobs.mob_at_player?
     end
