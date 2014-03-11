@@ -108,17 +108,17 @@ module Visibility
   # Currently data is stored as an array (rows) of arrays (cols) of integers (tiles).
 
   class FieldOfView
-    FOV_RADIUS = 12
     #include Visibility::ShadowCasting
     #include Visibility::ShadowCasting90d
     #include Visibility::ShadowCasting180d
 
-    attr_reader :actor_x, :actor_y, :direction
+    attr_reader :actor_x, :actor_y, :direction, :radius
 
     # Pass in a Map of area to do visibility in
-    def initialize(map, x, y, direction, calculator)
+    def initialize(map, x, y, direction, calculator, radius)
       singleton_class.send(:include, calculator)
       @map = map
+      @radius = radius
       @data = (0...@map.height).collect { |i| [0] * @map.width }
       @step = 0
       move(x, y, direction)
@@ -144,7 +144,7 @@ module Visibility
       @actor_x, @actor_y = x, y
       @direction = direction
       @step += 1
-      calculate FOV_RADIUS
+      calculate radius
     end
   end
 
