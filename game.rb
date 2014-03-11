@@ -14,8 +14,8 @@ class Game
     @player = Player.new map, 4, 12, DIR_N
     @map.mobs = Mobs.new([ # ew circular referencing
       @player,
-      StandingGuard.new(map, 5, 5, DIR_W),
-      StandingGuard.new(map, 8, 5, DIR_E),
+      #StandingGuard.new(map, 5, 5, DIR_W),
+      StandingGuard.new(map, 8, 3, DIR_E),
     ])
     @map_display = MapDisplay.new(map, screen_width, screen_height - 1)
   end

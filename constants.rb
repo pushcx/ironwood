@@ -1,5 +1,7 @@
 module Ironwood
 
+  HEARING_RADIUS = 7
+
   DIR_N  = 0
   DIR_NE = 1
   DIR_E  = 2

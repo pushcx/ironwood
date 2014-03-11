@@ -14,36 +14,39 @@ class StandingGuard < Mob
   end
 
   def tile ; 'G' ; end
-  def color ; standing_guard? ? '#9990ff' : '#ff0000' ; end
+  def color ; hunting? ? '#ff0000' : '#9990ff' ; end
 
   def set_state(player)
-    if fov.visible? player.x, player.y
+    #d "set_state #{self.tile} #{self.x},#{self.y} - noisy? #{player.noisy?}, hear? #{can_hear_to? player.x, player.y}"
+    if fov.visible? player.x, player.y or (player.noisy? and can_hear_to? player.x, player.y)
       spot_player! if standing_guard?
       @dest_x, @dest_y = player.x, player.y
     else
-      if walking? and (x == dest_x and y == dest_y)
+      if (walking? or hunting?) and (x == dest_x and y == dest_y)
         if (x == post_x and y == post_y)
+          self.direction = post_direction
           stand_guard!
         else
-          dest_x, dest_y = post_x, post_y
+          lost_player!
+          @dest_x, @dest_y = post_x, post_y
         end
       end
     end
   end
 
   state_machine :state, initial: :standing_guard do
-    event(:lost_player) { transition :walking => :standing_guard }
-    event(:stand_guard) { transition :walking => :standing_guard }
-    event(:spot_player) { transition :standing_guard => :walking }
+    event(:lost_player) { transition :hunting => :walking }
+    event(:stand_guard) { transition [:hunting, :walking] => :standing_guard }
+    event(:spot_player) { transition [:walking, :standing_guard] => :hunting }
 
     state :standing_guard do
       def turn
       end
     end
 
-    state :walking do
+    state :walking, :hunting do
       def turn
-        #d "at #{x},#{y}  walking to #{@dest_x},#{dest_y}"
+        d "at #{x},#{y} #{state} to #{@dest_x},#{dest_y}"
         walk_towards @dest_x, @dest_y
         player = map.mobs.player
         @dest_x, @dest_y = player.x, player.y if fov.visible? player.x, player.y

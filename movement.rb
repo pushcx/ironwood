@@ -14,6 +14,10 @@ module Movement
     DIR_NW =>  [ -1, -1 ],
   }
 
+  def can_hear_to? x, y
+    [ (self.x - x).abs, (self.y - y).abs ].max < HEARING_RADIUS
+  end
+
   def dest(direction)
     d_x, d_y = *DELTAS[direction]
     raise "tried to go invalid direction (#{direction})" if d_x.nil? or d_y.nil?
