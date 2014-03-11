@@ -17,8 +17,7 @@ x guard remembering where player was and investigating
 x standing guards return to post
 x guards hearing you - move + rest
 x blackjack knocking out guards (silent and noisy)
-  guards that wander buildings
-  guards using a* (astar gem?)
+x guards using a* (astar gem?)
   guards calling to other guards
   dragging bodies
   instructions on opening screen
@@ -28,6 +27,7 @@ x blackjack knocking out guards (silent and noisy)
   world generation
   noisemakers
   door locking, unlocking, picking
+  guards that wander buildings
 
   lanterns (affixed) and torches (portable)
   combat combos

@@ -1,3 +1,4 @@
+require_relative 'pathfinder'
 
 module Ironwood
 
@@ -49,7 +50,10 @@ module Movement
   end
 
   def walk_towards x, y
-    move(direction_to x, y)
+    result = Pathfinder.new(map, { x: self.x, y: self.y }, { x: x, y: y }).search
+    result.shift # pop off current location
+    #d "xy #{result.first.x},#{result.first.y} dir #{direction_to(result.first.x, result.first.y)}"
+    move(direction_to(result.first.x, result.first.y))
   end
 end
 

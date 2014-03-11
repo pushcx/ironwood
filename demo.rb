@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 
 require 'dispel'
+
 require 'state_machine'
+
 require 'pry'
 require 'yaml'
 
