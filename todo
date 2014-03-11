@@ -13,9 +13,10 @@ x guards that stand still
 x show guard attention
 x guards spotting you and chasing
 x guard catching you = game over
+x guard remembering where player was and investigating
+x standing guards return to post
   guards hearing you - move + rest
   blackjack knocking out guards (silent and noisy)
-  guard remembering where player was and investigating
   guards that wander buildings
   guards calling to other guards
   dragging bodies

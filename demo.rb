@@ -52,9 +52,8 @@ keys_to_directions = {
   'y' =>  DIR_NW,
 }
 
-map = StringMap.new(demo_dungeon)
 Dispel::Screen.open(colors: true) do |screen|
-  game = Game.new(map, screen.columns, screen.lines)
+  game = Game.new(demo_dungeon, screen.columns, screen.lines)
   #game = Game.new(map, 5,5)
   Curses.curs_set(0)
 

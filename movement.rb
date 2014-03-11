@@ -16,6 +16,7 @@ module Movement
 
   def dest(direction)
     d_x, d_y = *DELTAS[direction]
+    raise "tried to go invalid direction (#{direction})" if d_x.nil? or d_y.nil?
     return x + d_x, y + d_y
   end
 
@@ -29,12 +30,13 @@ module Movement
     self.x, self.y = dest(direction)
   end
 
-  def chase(player)
+  def walk_towards x, y
     delta_x = delta_y = 0
-    delta_x += 1 if player.x > self.x
-    delta_x -= 1 if player.x < self.x
-    delta_y += 1 if player.y > self.y
-    delta_y -= 1 if player.y < self.y
+    delta_x += 1 if x > self.x
+    delta_x -= 1 if x < self.x
+    delta_y += 1 if y > self.y
+    delta_y -= 1 if y < self.y
+    #d "at (#{self.x},#{self.y}) want (#{x},#{y}) delta_x #{delta_x} delta_y #{delta_y}"
     direction = DELTAS.select { |dir, d| d[0] == delta_x and d[1] == delta_y }.keys.first
     move(direction)
   end

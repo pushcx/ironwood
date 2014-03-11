@@ -5,12 +5,14 @@ module Ironwood
 # Basic map storage.
 class StringMap
   attr_reader :width, :height
+  attr_accessor :mobs
 
   # Takes an array of strings: . is ground and # is wall. Assumes rectilinearity.
   # This will be elaborated upon greatly in the future, and probably use NArray.
   def initialize(string_array)
     @tiles = string_array
     @width, @height = string_array.first.length, string_array.length
+    @mobs = nil
   end
 
   # Returns the tile at coordinates x, y.

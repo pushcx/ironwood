@@ -2,18 +2,16 @@ module Ironwood
 
 class MapDisplay
   attr_reader :map, :fov, :map_memory, :width, :height
-  attr_accessor :mobs
 
-  def initialize map, mobs, width, height
+  def initialize map, width, height
     @map = map
     @map_memory = MapMemory.new(map)
     @width = width
     @height = height
-    @mobs = mobs
   end
 
   def player
-    mobs.player
+    map.mobs.player
   end
 
   def viewport_tiles
@@ -48,7 +46,7 @@ class MapDisplay
     end
 
     # second pass, add mobs
-    mobs.each do |mob|
+    map.mobs.each do |mob|
       if player.fov.visible? mob.x, mob.y
         col, row = xy_to_colrow mob.x, mob.y
         next if col < 0 or col >= width or row < 0 or row >= height
@@ -64,8 +62,8 @@ class MapDisplay
     # first pass, highlight the terrain
     viewport_tiles do |x, y, col, row|
       if player.fov.visible?(x, y)
-        if mobs.mob_at? x, y
-          mob = mobs.mob_at x, y
+        if map.mobs.mob_at? x, y
+          mob = map.mobs.mob_at x, y
           style_map.add([mob.color, "#000000"], row, [col])
         else
           style_map.add(["#ffffff", "#000000"], row, [col])
@@ -77,7 +75,7 @@ class MapDisplay
       end
     end
     # second pass, highlight mobvision
-    mobs.each do |mob|
+    map.mobs.each do |mob|
       next if mob.player?
       next unless player.fov.visible? mob.x, mob.y
       viewport_tiles do |x, y, col, row|

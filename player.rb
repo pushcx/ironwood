@@ -7,6 +7,7 @@ class Player < Mob
     super
     @fov = Visibility::FieldOfView.new(map, x, y, direction, Visibility::ShadowCasting)
   end
+
   def player? ; true ; end
   def tile ; '@' ; end
   def color ; '#9999ff' ; end
