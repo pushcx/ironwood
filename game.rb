@@ -22,12 +22,17 @@ class Game
   end
 
   def turn
-    map.mobs.each do |mob|
-      next if mob.player?
+    # player has moved onto mob to knock it out
+    if mob = map.mobs.mob_at_player
+      return @game_over = true if mob.hunting? # can't knock out alert guards
+      map.mobs.delete mob
+    end
+
+    map.mobs.enemies.each do |mob|
       mob.set_state(player)
       mob.turn
 
-      @game_over = true if mob.x == player.x and mob.y == player.y
+      @game_over = true if map.mobs.mob_at_player?
     end
     time.advance
   end

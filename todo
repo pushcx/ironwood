@@ -16,7 +16,7 @@ x guard catching you = game over
 x guard remembering where player was and investigating
 x standing guards return to post
 x guards hearing you - move + rest
-  blackjack knocking out guards (silent and noisy)
+x blackjack knocking out guards (silent and noisy)
   guards that wander buildings
   guards using a* (astar gem?)
   guards calling to other guards
