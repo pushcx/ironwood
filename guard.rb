@@ -14,7 +14,7 @@ class StandingGuard < Mob
   end
 
   def tile ; 'G' ; end
-  def color ; '#ff0000' ; end
+  def color ; standing_guard? ? '#9990ff' : '#ff0000' ; end
 
   def set_state(player)
     if fov.visible? player.x, player.y
