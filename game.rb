@@ -29,7 +29,7 @@ class Game
     end
 
     map.mobs.enemies.each do |mob|
-      mob.set_state(player)
+      mob.decide_state(player)
       mob.turn
 
       @game_over = true if map.mobs.mob_at_player?

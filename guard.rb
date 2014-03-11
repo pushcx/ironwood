@@ -21,30 +21,34 @@ class StandingGuard < Mob
     @dest_x, @dest_y = x, y
   end
 
-  def set_state(player)
-    #d "set_state #{self.tile} (#{state}) #{self.x},#{self.y} - noisy? #{player.noisy?}, hear? #{can_hear_to? player.x, player.y}"
-    if fov.visible? player.x, player.y or (player.noisy? and can_hear_to? player.x, player.y)
-      spot_player! if standing_guard?
-      @dest_x, @dest_y = player.x, player.y
-    else
-      if (walking? or hunting?) and (x == dest_x and y == dest_y)
-        if (x == post_x and y == post_y)
-          self.direction = post_direction
-          stand_guard!
-        else
-          order_walk! if walking?
-          lost_player! if hunting?
-          @dest_x, @dest_y = post_x, post_y
-        end
-      end
-    end
+  def spot? player
+    return false unless fov.visible? player.x, player.y
+    @dest_x, @dest_y = player.x, player.y
+    hunt! unless hunting?
+    true
+  end
+
+  def hear? player
+    return true if hunting?
+    return false unless player.noisy? and can_hear_to? player.x, player.y
+    hunt!
+    @dest_x, @dest_y = player.x, player.y
+  end
+
+  def decide_state(player)
+    #d "decide_state #{self.tile} (#{state}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y}) - noisy? #{player.noisy?}, hear? #{can_hear_to? player.x, player.y}"
+    return if spot? player
+    return if hear? player
+    return if standing_guard?
+
+    decide_arrived?
   end
 
   state_machine :state, initial: :standing_guard do
     event(:lost_player) { transition :hunting => :walking }
     event(:order_walk)  { transition all => :walking }
     event(:stand_guard) { transition [:hunting, :walking] => :standing_guard }
-    event(:spot_player) { transition [:walking, :standing_guard] => :hunting }
+    event(:hunt) { transition [:walking, :standing_guard] => :hunting }
 
     state :standing_guard do
       def turn
@@ -60,6 +64,17 @@ class StandingGuard < Mob
         player = map.mobs.player
         @dest_x, @dest_y = player.x, player.y if fov.visible? player.x, player.y
       end
+
+      def decide_arrived?
+        if x == post_x and y == post_y
+          stand_guard!
+          self.direction = post_direction
+        end
+        if x == dest_x and y == dest_x
+          order_walk!
+          @dest_x, @dest_y = post_x, post_y
+        end
+      end
     end
 
     state :walking do
@@ -67,6 +82,13 @@ class StandingGuard < Mob
         #d "at #{x},#{y} #{state} (#{walk_cycle_state}, #{peek_cycle_state}) to #{@dest_x},#{dest_y}"
         walk_cycle_turn
         walk_cycle_step!
+      end
+
+      def decide_arrived?
+        if x == dest_x and y == dest_x
+          lost_player!
+          @dest_x, @dest_y = post_x, post_y
+        end
       end
     end
   end
