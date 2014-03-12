@@ -19,6 +19,7 @@ x guards hearing you - move + rest
 x blackjack knocking out guards (silent and noisy)
 x guards using a* (astar gem?)
 x guards calling to other guards
+  display sounds to player
   dragging bodies
   instructions on opening screen
 
@@ -28,6 +29,7 @@ x guards calling to other guards
   noisemakers
   door locking, unlocking, picking
   guards that wander buildings
+  bug: guards can walk into each other
 
   lanterns (affixed) and torches (portable)
   combat combos

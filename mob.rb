@@ -21,13 +21,27 @@ class Mob
   def color ; '#800080' ; end
 
   def act action
-    last_actions << action
+    if action == :rest
+      @last_actions = []
+    else
+      last_actions << action
+    end
     last_actions.shift while last_actions.count > 3
+    map.make_sound Sound.new(self, :drag) if action == :drag
+    map.make_sound Sound.new(self, :run)  if last_actions == [:move, :move, :move]
   end
 
   def noise_count
-    # [:move, :rest, :move] is 1, not 2, so this is more complicated than select
-    last_actions.reverse.inject(0) { |c, a| return c if a != :move; c + 1 }
+    last_actions.inject(0) do |acc, action|
+      case action
+      when :move
+        acc + 1
+      when :drag
+        acc + 2
+      else
+        acc
+      end
+    end
   end
 
   def noisy?

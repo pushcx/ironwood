@@ -11,6 +11,10 @@ class GameTime
   def advance
     @tick += 1
   end
+
+  def previous
+    tick - 1
+  end
 end
 
 end # Ironwood

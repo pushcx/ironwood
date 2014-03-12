@@ -1,7 +1,5 @@
 module Ironwood
 
-  HEARING_RADIUS = 15
-
   PLAYER_VIEW_RADIUS = 12
   GUARD_VIEW_RADIUS = 6
 

@@ -15,10 +15,6 @@ module Movement
     DIR_NW =>  [ -1, -1 ],
   }
 
-  def can_hear_to? x, y
-    [ (self.x - x).abs, (self.y - y).abs ].max < HEARING_RADIUS
-  end
-
   def dest(direction)
     d_x, d_y = *DELTAS[direction]
     raise "tried to go invalid direction (#{direction})" if d_x.nil? or d_y.nil?
@@ -53,6 +49,7 @@ module Movement
     result = Pathfinder.new(map, { x: self.x, y: self.y }, { x: x, y: y }).search
     result.shift # pop off current location
     #d "xy #{result.first.x},#{result.first.y} dir #{direction_to(result.first.x, result.first.y)}"
+    d "that bug you can't repro in walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
     move(direction_to(result.first.x, result.first.y))
   end
 end

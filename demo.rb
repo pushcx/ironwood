@@ -16,6 +16,7 @@ require_relative 'map_memory'
 require_relative 'mobs'
 require_relative 'player'
 require_relative 'status_bar'
+require_relative 'sound'
 require_relative 'game_time'
 
 def d *s

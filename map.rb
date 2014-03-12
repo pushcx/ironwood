@@ -4,15 +4,31 @@ module Ironwood
 
 # Basic map storage.
 class StringMap
-  attr_reader :width, :height
+  attr_reader :width, :height, :time, :sounds
   attr_accessor :mobs
 
   # Takes an array of strings: . is ground and # is wall. Assumes rectilinearity.
   # This will be elaborated upon greatly in the future, and probably use NArray.
-  def initialize(string_array)
+  def initialize(string_array, time)
     @tiles = string_array
     @width, @height = string_array.first.length, string_array.length
     @mobs = nil
+    @time = time
+    @sounds = {}
+  end
+
+  def turn
+    # can hear this turn (so mobs hear player moves) and last turn
+    # (so players hear mobs, and mobs hear earlier-acting mobs)
+    sounds.delete(time.tick - 2)
+  end
+
+  def make_sound sound
+    sounds[time.tick] = sounds.fetch(time.tick, []) + [sound]
+  end
+
+  def sound_heard_by mob
+    [sounds.fetch(time.tick, []) + sounds.fetch(time.previous, [])].flatten.select { |s| s.heard_at? mob.x, mob.y }.sort_by(&:priority).last
   end
 
   # Returns the tile at coordinates x, y.

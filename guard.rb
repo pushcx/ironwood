@@ -2,8 +2,6 @@ require_relative 'mob'
 
 module Ironwood
 
-AudioEvent = Struct.new :noisy?, :x, :y
-
 class StandingGuard < Mob
   attr_reader :x, :y, :direction
   attr_reader :state
@@ -32,15 +30,17 @@ class StandingGuard < Mob
   end
 
   def hear? player
-    return false unless player.noisy? and can_hear_to? player.x, player.y
-    #d " - hear at #{player.x},#{player.y}"
-    @dest_x, @dest_y = player.x, player.y
+    return false if hunting? # can't hear when running
+    sound = map.sound_heard_by(self)
+    return false unless sound
+    #d " - hear at #{sound.x},#{sound.y}"
+    @dest_x, @dest_y = sound.x, sound.y
     hunt! unless hunting?
     true
   end
 
   def decide_state(player)
-    #d "decide_state #{self.tile} (#{state}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y}) - noisy? #{player.noisy?}, hear? #{can_hear_to? player.x, player.y}"
+    #d "decide_state #{self.tile} (#{state}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y})"
     return if spot? player
     return if hear? player
     return if standing_guard?
@@ -64,11 +64,7 @@ class StandingGuard < Mob
 
     state :yelling do
       def turn
-        # haaaaack
-        map.mobs.enemies.each do |mob|
-          next if mob == self
-          mob.hear? AudioEvent.new true, self.x, self.y
-        end
+        map.make_sound Sound.new(self, :yell)
         hunt!
       end
     end
@@ -77,6 +73,7 @@ class StandingGuard < Mob
       def turn
         #d "at #{x},#{y} #{state} to #{@dest_x},#{dest_y}"
         walk_towards @dest_x, @dest_y
+        act :move
         player = map.mobs.player
         @dest_x, @dest_y = player.x, player.y if fov.visible? player.x, player.y
       end
@@ -127,6 +124,7 @@ class StandingGuard < Mob
 
     state :rest do
       def walk_cycle_turn
+        act :rest
         peek_cycle_turn
         peek_cycle_step!
       end
@@ -134,6 +132,7 @@ class StandingGuard < Mob
 
     state :move do
       def walk_cycle_turn
+        act :move
         walk_towards @dest_x, @dest_y
         player = map.mobs.player
         @dest_x, @dest_y = player.x, player.y if fov.visible? player.x, player.y

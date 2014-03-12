@@ -9,7 +9,7 @@ class Game
     @time = GameTime.new
     @game_over = false
 
-    @map = StringMap.new(map_string)
+    @map = StringMap.new(map_string, time)
     @map_memory = MapMemory.new(map)
     @player = Player.new map, 7, 4, DIR_E
     @map.mobs = Mobs.new([ # ew circular referencing
@@ -22,6 +22,8 @@ class Game
   end
 
   def turn
+    # player's turn happens implicitly in demo - should prob move here
+    map.turn
     # player has moved onto mob to knock it out
     if mob = map.mobs.mob_at_player
       return @game_over = true if mob.hunting? # can't knock out alert guards
