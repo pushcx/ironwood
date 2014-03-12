@@ -2,6 +2,8 @@ require_relative 'mob'
 
 module Ironwood
 
+AudioEvent = Struct.new :noisy?, :x, :y
+
 class StandingGuard < Mob
   attr_reader :x, :y, :direction
   attr_reader :state
@@ -25,7 +27,7 @@ class StandingGuard < Mob
     return false unless fov.visible? player.x, player.y
     #d " - spot at #{player.x},#{player.y}"
     @dest_x, @dest_y = player.x, player.y
-    hunt! unless hunting?
+    yell! unless yelling? or hunting?
     true
   end
 
@@ -50,12 +52,24 @@ class StandingGuard < Mob
     event(:lost_player) { transition :hunting => :walking }
     event(:order_walk)  { transition all => :walking }
     event(:stand_guard) { transition [:hunting, :walking] => :standing_guard }
-    event(:hunt) { transition [:walking, :standing_guard] => :hunting }
+    event(:yell) { transition [:walking, :standing_guard] => :yelling }
+    event(:hunt) { transition [:walking, :standing_guard, :yelling] => :hunting }
 
     state :standing_guard do
       def turn
         walk_cyle_state = :move
         peek_cyle_state = :forward1
+      end
+    end
+
+    state :yelling do
+      def turn
+        # haaaaack
+        map.mobs.enemies.each do |mob|
+          next if mob == self
+          mob.hear? AudioEvent.new true, self.x, self.y
+        end
+        hunt!
       end
     end
 
