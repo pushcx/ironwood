@@ -45,7 +45,13 @@ class MapDisplay
       end
     end
 
-    # second pass, add mobs
+    # second pass, add sounds (bad big o here, sounds * tiles)
+    map.sounds_heard_by(player).each do |sound|
+      col, row = xy_to_colrow sound.x, sound.y
+      lines[row][col] = '!'
+    end
+
+    # third pass, add mobs
     map.mobs.each do |mob|
       if player.fov.visible? mob.x, mob.y
         col, row = xy_to_colrow mob.x, mob.y
@@ -74,6 +80,7 @@ class MapDisplay
         style_map.add(["#000000", "#000000"], row, [col])
       end
     end
+
     # second pass, highlight mobvision
     map.mobs.each do |mob|
       next if mob.player?
@@ -84,6 +91,13 @@ class MapDisplay
         end
       end
     end
+
+    # third pass (yes, not same order as view), show sounds
+    map.sounds_heard_by(player).each do |sound|
+      col, row = xy_to_colrow sound.x, sound.y
+      style_map.add([SOUND_COLOR, '#000000'], row, [col])
+    end
+
     style_map
   end
 end

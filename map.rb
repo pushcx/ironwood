@@ -18,17 +18,20 @@ class StringMap
   end
 
   def turn
-    # can hear this turn (so mobs hear player moves) and last turn
-    # (so players hear mobs, and mobs hear earlier-acting mobs)
-    sounds.delete(time.tick - 2)
+    sounds.delete(time.tick - 4)
   end
 
   def make_sound sound
     sounds[time.tick] = sounds.fetch(time.tick, []) + [sound]
   end
 
+  def sounds_heard_by mob
+    list = mob.player? ? sounds.values : [sounds.fetch(time.tick, []) + sounds.fetch(time.previous, [])]
+    list.flatten.select { |s| s.heard_by? mob }
+  end
+
   def sound_heard_by mob
-    [sounds.fetch(time.tick, []) + sounds.fetch(time.previous, [])].flatten.select { |s| s.heard_at? mob.x, mob.y }.sort_by(&:priority).last
+    sounds_heard_by(mob).sort_by(&:priority).last
   end
 
   # Returns the tile at coordinates x, y.

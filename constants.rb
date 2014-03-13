@@ -12,4 +12,6 @@ module Ironwood
   DIR_W  = 6
   DIR_NW = 7
 
+  SOUND_COLOR = '#00ff00'
+
 end # Ironwood
