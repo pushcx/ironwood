@@ -3,15 +3,13 @@ require_relative 'visibility'
 module Ironwood
 
 # Basic map storage.
-class StringMap
+class Map
   attr_reader :width, :height, :time, :sounds, :items
   attr_accessor :mobs
 
   # Takes an array of strings: . is ground and # is wall. Assumes rectilinearity.
   # This will be elaborated upon greatly in the future, and probably use NArray.
-  def initialize(string_array, time)
-    @tiles = string_array
-    @width, @height = string_array.first.length, string_array.length
+  def initialize(time)
     @mobs = nil
     @time = time
     @sounds = {}

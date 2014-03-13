@@ -20,6 +20,7 @@ require_relative 'mobs'
 require_relative 'player'
 require_relative 'status_bar'
 require_relative 'sound'
+require_relative 'string_map'
 require_relative 'treasure'
 require_relative 'game_time'
 
@@ -30,23 +31,6 @@ def d *s
 end
 
 module Ironwood
-
-demo_dungeon = [
-  "##################################################",
-  "#..#.........#.#.................................#",
-  "#..#..#......###.................................#",
-  "#.....#........................###......#........#",
-  "#######......................~~~~#......#........#",
-  "#........................~~~~~..~#...............#",
-  "#.................~~~~~~~~~......................#",
-  "#................~~~~~~..........................#",
-  "#........#.......~~~~..................###+###...#",
-  "########+#..##....~~~...#..............#.....#...#",
-  "#........#.........~~....#.............#.....+...#",
-  "#........#........~~......#............#+#####...#",
-  "#........#.......~~..............................#",
-  "##################################################"
-]
 
 keys_to_directions = {
   'k' =>  DIR_N,
@@ -63,7 +47,7 @@ at_exit do
   puts "Score: #{$SCORE}"
 end
 Dispel::Screen.open(colors: true) do |screen|
-  game = Game.new(demo_dungeon, screen.columns, screen.lines)
+  game = Game.new(screen.columns, screen.lines)
   Curses.curs_set(0)
 
   screen.draw File.read('instructions.txt').split("\n").map { |l| l.center(screen.columns) }.join("\n"), [], [0,0]

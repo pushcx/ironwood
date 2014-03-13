@@ -4,12 +4,12 @@ class Game
   attr_accessor :status_bar, :map, :time, :player, :map_display
   attr_reader :game_over, :score
 
-  def initialize(map_string, screen_width, screen_height)
+  def initialize(screen_width, screen_height)
     @status_bar = StatusBar.new(self)
     @time = GameTime.new
     @game_over = false
 
-    @map = StringMap.new(map_string, time)
+    @map = StringMap.new(time)
     @map_memory = MapMemory.new(map)
     @player = Player.new map, 2, 2, DIR_E
     @map.mobs = Mobs.new([ # ew circular referencing
