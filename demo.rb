@@ -80,7 +80,7 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.init_screen
       Curses.noecho
       Curses.nonl
-    when ' '
+    when ' ','.'
       game.player.act :rest
       game.turn
     when 'd'
