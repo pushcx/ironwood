@@ -124,6 +124,10 @@ module Visibility
       move(x, y, direction)
     end
 
+    def to_yaml_properties
+      %w{@actor_x @actor_y @radius}
+    end
+
     # Test if a tile is visible.
     def visible? x, y
       @data[y][x] == @step or (x == actor_x and y == actor_y)

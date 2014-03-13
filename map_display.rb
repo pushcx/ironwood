@@ -45,13 +45,19 @@ class MapDisplay
       end
     end
 
-    # second pass, add sounds (bad big o here, sounds * tiles)
+    # second pass, add sounds
     map.sounds_heard_by(player).each do |sound|
       col, row = xy_to_colrow sound.x, sound.y
       lines[row][col] = '!'
     end
 
-    # third pass, add mobs
+    # third pass, add items
+    map.items_seen_by(player).each do |item|
+      col, row = xy_to_colrow item.x, item.y
+      lines[row][col] = item.tile
+    end
+
+    # fourth pass, add mobs
     map.mobs.each do |mob|
       if player.fov.visible? mob.x, mob.y
         col, row = xy_to_colrow mob.x, mob.y
@@ -68,12 +74,7 @@ class MapDisplay
     # first pass, highlight the terrain
     viewport_tiles do |x, y, col, row|
       if player.fov.visible?(x, y)
-        if map.mobs.mob_at? x, y
-          mob = map.mobs.mob_at x, y
-          style_map.add([mob.color, "#000000"], row, [col])
-        else
-          style_map.add(["#ffffff", "#000000"], row, [col])
-        end
+        style_map.add(["#ffffff", "#000000"], row, [col])
       elsif map_memory.remember?(x, y)
         style_map.add(["#666666", "#000000"], row, [col])
       else
@@ -92,10 +93,23 @@ class MapDisplay
       end
     end
 
-    # third pass (yes, not same order as view), show sounds
+    # third pass, show sounds
     map.sounds_heard_by(player).each do |sound|
       col, row = xy_to_colrow sound.x, sound.y
       style_map.add([SOUND_COLOR, '#000000'], row, [col])
+    end
+
+    # fourth pass, mobs items
+    map.items_seen_by(player).each do |item|
+      col, row = xy_to_colrow item.x, item.y
+      style_map.add([item.color, '#000000'], row, [col])
+    end
+
+    # last, show mobs
+    map.mobs.each do |mob|
+      next unless player.fov.visible? mob.x, mob.y
+      col, row = xy_to_colrow mob.x, mob.y
+      style_map.add([mob.color, "#000000"], row, [col])
     end
 
     style_map

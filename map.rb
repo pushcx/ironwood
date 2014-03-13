@@ -4,7 +4,7 @@ module Ironwood
 
 # Basic map storage.
 class StringMap
-  attr_reader :width, :height, :time, :sounds
+  attr_reader :width, :height, :time, :sounds, :items
   attr_accessor :mobs
 
   # Takes an array of strings: . is ground and # is wall. Assumes rectilinearity.
@@ -15,6 +15,7 @@ class StringMap
     @mobs = nil
     @time = time
     @sounds = {}
+    @items = Items.new
   end
 
   def turn
@@ -30,8 +31,20 @@ class StringMap
     list.flatten.select { |s| s.heard_by? mob }
   end
 
+  def to_yaml_properties
+    [:@width, :@height, :@time]
+  end
+
   def sound_heard_by mob
     sounds_heard_by(mob).sort_by(&:priority).last
+  end
+
+  def drop_item item
+    items << item
+  end
+
+  def items_seen_by mob
+    items.select { |i| mob.fov.visible? i.x, i.y }
   end
 
   # Returns the tile at coordinates x, y.

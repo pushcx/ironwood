@@ -19,18 +19,18 @@ x guards hearing you - move + rest
 x blackjack knocking out guards (silent and noisy)
 x guards using a* (astar gem?)
 x guards calling to other guards
-  display sounds to player
+x display sounds to player
   dragging bodies
   instructions on opening screen
 
-  door open/closing
   multiple floors
   world generation
   noisemakers
-  door locking, unlocking, picking
   guards that wander buildings
   bug: guards can walk into each other
   older sounds should be dark green
+  door open/closing
+  door locking, unlocking, picking
 
   lanterns (affixed) and torches (portable)
   combat combos

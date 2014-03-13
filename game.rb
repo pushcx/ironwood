@@ -28,6 +28,7 @@ class Game
     if mob = map.mobs.mob_at_player
       return @game_over = true if mob.hunting? # can't knock out alert guards
       map.mobs.delete mob
+      map.drop_item Body.new(map, mob.x, mob.y)
     end
 
     map.mobs.enemies.each do |mob|

@@ -7,9 +7,11 @@ require 'state_machine'
 require 'pry'
 require 'yaml'
 
+require_relative 'body'
 require_relative 'constants'
 require_relative 'game'
 require_relative 'guard'
+require_relative 'items'
 require_relative 'map'
 require_relative 'map_display'
 require_relative 'map_memory'
@@ -76,6 +78,12 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.nonl
     when ' '
       game.player.act :rest
+      game.turn
+    when 'd'
+      body = game.map.items.body_near_player game.player
+      next if not body
+      body.x, body.y = game.player.x, game.player.y
+      game.player.act :drag
       game.turn
     when *keys_to_directions.keys
       direction = keys_to_directions[key]

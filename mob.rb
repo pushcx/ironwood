@@ -27,8 +27,8 @@ class Mob
       last_actions << action
     end
     last_actions.shift while last_actions.count > 3
-    map.make_sound Sound.new(self, :drag) if action == :drag
-    map.make_sound Sound.new(self, :run)  if last_actions == [:move, :move, :move]
+    map.make_sound Sound.new(self, :drag) if action == :drag and noise_count >= 3
+    map.make_sound Sound.new(self, :run)  if action == :move and noise_count >= 3
   end
 
   def noise_count
@@ -42,10 +42,6 @@ class Mob
         acc
       end
     end
-  end
-
-  def noisy?
-    last_actions == [:move, :move, :move]
   end
 end
 
