@@ -62,7 +62,7 @@ Dispel::Screen.open(colors: true) do |screen|
   #game = Game.new(map, 5,5)
   Curses.curs_set(0)
 
-  screen.draw "Ironwood", [], [0,0]
+  screen.draw File.read('instructions.txt').split("\n").map { |l| l.center(screen.columns) }.join("\n"), [], [0,0]
   Dispel::Keyboard.output do |key| # main game loop
     exit if game.game_over
     case key

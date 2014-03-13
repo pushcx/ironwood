@@ -21,7 +21,7 @@ x guards using a* (astar gem?)
 x guards calling to other guards
 x display sounds to player
 x dragging bodies
-  instructions on opening screen
+x instructions on opening screen
 
   multiple floors
   world generation
@@ -31,6 +31,7 @@ x dragging bodies
   older sounds should be dark green
   door open/closing
   door locking, unlocking, picking
+  colorize instructions
 
   lanterns (affixed) and torches (portable)
   combat combos
