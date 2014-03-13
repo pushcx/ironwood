@@ -2,7 +2,7 @@ module Ironwood
 
 class Game
   attr_accessor :status_bar, :map, :time, :player, :map_display
-  attr_reader :game_over
+  attr_reader :game_over, :score
 
   def initialize(map_string, screen_width, screen_height)
     @status_bar = StatusBar.new(self)
@@ -18,17 +18,27 @@ class Game
       StandingGuard.new(map, 7, 3, DIR_S),
     ])
     #@map.mobs.list.last.order_walk_to(1, 1)
+    @map.drop_item Treasure.new(map, 3, 3)
+    @map.drop_item Treasure.new(map, 4, 2)
     @map_display = MapDisplay.new(map, screen_width, screen_height - 1)
+    @score = 0
   end
 
   def turn
     # player's turn happens implicitly in demo - should prob move here
     map.turn
+
     # player has moved onto mob to knock it out
     if mob = map.mobs.mob_at_player
       return @game_over = true if mob.hunting? # can't knock out alert guards
       map.mobs.delete mob
       map.drop_item Body.new(map, mob.x, mob.y)
+    end
+
+    # player has moved onto treasure to pick it up
+    if item = map.items.item_at(player.x, player.y) and item.is_a? Treasure
+      map.items.delete item
+      @score += 1
     end
 
     map.mobs.enemies.each do |mob|

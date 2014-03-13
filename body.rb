@@ -1,13 +1,8 @@
+require_relative 'item'
+
 module Ironwood
 
-class Body
-  attr_reader :map
-  attr_accessor :x, :y
-
-  def initialize map, x, y
-    @map, @x, @y = map, x, y
-  end
-
+class Body < Item
   def tile ; '%' ; end
   def color ; '#aa5500' ; end
 end

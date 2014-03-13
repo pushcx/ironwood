@@ -11,6 +11,7 @@ require_relative 'body'
 require_relative 'constants'
 require_relative 'game'
 require_relative 'guard'
+require_relative 'item'
 require_relative 'items'
 require_relative 'map'
 require_relative 'map_display'
@@ -19,6 +20,7 @@ require_relative 'mobs'
 require_relative 'player'
 require_relative 'status_bar'
 require_relative 'sound'
+require_relative 'treasure'
 require_relative 'game_time'
 
 def d *s
@@ -98,7 +100,7 @@ Dispel::Screen.open(colors: true) do |screen|
     screen.draw *game.display
 
     if game.game_over
-      screen.draw "Game Over - a guard caught you", Dispel::StyleMap.single_line_reversed(screen.columns), [0,0]
+      screen.draw "Game Over - a guard caught you - score #{game.score}", Dispel::StyleMap.single_line_reversed(screen.columns), [0,0]
     end
 
   end

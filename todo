@@ -22,17 +22,20 @@ x guards calling to other guards
 x display sounds to player
 x dragging bodies
 x instructions on opening screen
+x treasure
 
-  multiple floors
   world generation
-  noisemakers
+  multiple floors
   guards that wander buildings
+  guards angry at finding bodies
   bug: guards can walk into each other
+  noisemakers
+  colorize instructions
   older sounds should be dark green
+  screen resizing
+
   door open/closing
   door locking, unlocking, picking
-  colorize instructions
-
   lanterns (affixed) and torches (portable)
   combat combos
   citizens that wander
