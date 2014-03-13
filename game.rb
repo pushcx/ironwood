@@ -11,13 +11,13 @@ class Game
 
     @map = StringMap.new(map_string, time)
     @map_memory = MapMemory.new(map)
-    @player = Player.new map, 7, 4, DIR_E
+    @player = Player.new map, 2, 2, DIR_E
     @map.mobs = Mobs.new([ # ew circular referencing
       @player,
-      StandingGuard.new(map, 7, 1, DIR_E),
-      StandingGuard.new(map, 7, 3, DIR_E),
+      StandingGuard.new(map, 12, 3, DIR_SE),
+      StandingGuard.new(map, 7, 3, DIR_S),
     ])
-    @map.mobs.list.last.order_walk_to(1, 1)
+    #@map.mobs.list.last.order_walk_to(1, 1)
     @map_display = MapDisplay.new(map, screen_width, screen_height - 1)
   end
 
