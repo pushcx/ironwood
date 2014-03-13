@@ -59,9 +59,11 @@ keys_to_directions = {
   'y' =>  DIR_NW,
 }
 
+at_exit do
+  puts "Score: #{$SCORE}"
+end
 Dispel::Screen.open(colors: true) do |screen|
   game = Game.new(demo_dungeon, screen.columns, screen.lines)
-  #game = Game.new(map, 5,5)
   Curses.curs_set(0)
 
   screen.draw File.read('instructions.txt').split("\n").map { |l| l.center(screen.columns) }.join("\n"), [], [0,0]
@@ -101,6 +103,7 @@ Dispel::Screen.open(colors: true) do |screen|
 
     if game.game_over
       screen.draw "Game Over - a guard caught you - score #{game.score}", Dispel::StyleMap.single_line_reversed(screen.columns), [0,0]
+      $SCORE = game.score
     end
 
   end
