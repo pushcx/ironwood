@@ -28,12 +28,12 @@ class Pathfinder < Astar
 
     [
       [x,     y - 1], # n
-      [x + 1, y - 1], # ne
       [x + 1, y    ], # east
-      [x + 1, y + 1], # se
       [x,     y + 1], # south
-      [x - 1, y + 1], # sw
       [x - 1, y    ], # west
+      [x + 1, y - 1], # ne
+      [x + 1, y + 1], # se
+      [x - 1, y + 1], # sw
       [x - 1, y - 1], # nw
     ]
   end
