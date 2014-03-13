@@ -17,13 +17,15 @@ class Sound
   attr_reader :mob, :x, :y, :radius, :priority
 
   def initialize mob, type
+    @mob = mob
     @x, @y = mob.x, mob.y
     @radius = RADIUSES[type]
     @priority = PRIORITIES[type]
   end
 
-  def heard_at? x, y
-    [ (@x - x).abs, (@y - y).abs ].max < radius
+  def heard_by? listener
+    return false if mob == listener or (mob.x == x and mob.y == y)
+    [ (@x - listener.x).abs, (@y - listener.y).abs ].max < radius
   end
 end
 

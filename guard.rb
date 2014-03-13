@@ -71,7 +71,7 @@ class StandingGuard < Mob
 
     state :hunting do
       def turn
-        #d "at #{x},#{y} #{state} to #{@dest_x},#{dest_y}"
+        #d "  at #{x},#{y} #{state} to #{@dest_x},#{dest_y}"
         walk_towards @dest_x, @dest_y
         act :move
         player = map.mobs.player
@@ -79,10 +79,11 @@ class StandingGuard < Mob
       end
 
       def decide_arrived?
-        #d "  - hunting:decide_arrived? #{x},#{y} #{@dest_x},#{@dest_y}"
+        #d "hunting:decide_arrived? #{x},#{y} #{@dest_x},#{@dest_y}"
         if at_destination?
           lost_player!
           @dest_x, @dest_y = post_x, post_y
+          ##d  "  - yep, arrived, new dest is #{@dest_x},#{@dest_y} #{state}"
         end
       end
     end

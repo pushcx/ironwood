@@ -50,6 +50,7 @@ module Movement
     result.shift # pop off current location
     #d "xy #{result.first.x},#{result.first.y} dir #{direction_to(result.first.x, result.first.y)}"
     d "that bug you can't repro in walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
+    return if result.empty? # already there
     move(direction_to(result.first.x, result.first.y))
   end
 end
