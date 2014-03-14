@@ -136,18 +136,18 @@ class GenMap < Map
     #end
 
     # drop treasure
-    rand(20..50).times do
+    rand(60..90).times do
       x, y = rand(0..@width-1),rand(0..@height-1)
       next unless @tiles[y][x] == '.'
       next if items.item_at x, y
       drop_item Treasure.new(self, x, y)
 
       # drop guard near most treasures
-      next if rand(4) == 0
+      next if rand(3) == 0
       add_guard_guarding(x, y)
     end
 
-    rand(10..20).times do
+    rand(5..15).times do
       x, y = rand(0..@width-1),rand(0..@height-1)
       next unless @tiles[y][x] == '.'
       next if mobs.mob_at x, y
