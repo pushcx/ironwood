@@ -1,8 +1,12 @@
+require 'forwardable'
 
 module Ironwood
 
 class Mobs
   attr_reader :list
+
+  extend Forwardable
+  def_delegators :@list, :<<, :delete, :each, :select, :sample
 
   def initialize list=[]
     @list = list
@@ -12,16 +16,8 @@ class Mobs
     list.select { |m| !m.player? }.each(&block)
   end
 
-  def each(&block)
-    list.each(&block)
-  end
-
-  def delete mob
-    list.delete mob
-  end
-
   def player
-    list.each do |mob|
+    each do |mob|
       return mob if mob.player?
     end
     raise "Looked for player, didn't find"

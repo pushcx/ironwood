@@ -135,11 +135,30 @@ class GenMap < Map
     #  @rooms[i] = r
     #end
 
+    # drop treasure
     rand(20..50).times do
       x, y = rand(0..@width-1),rand(0..@height-1)
       next unless @tiles[y][x] == '.'
       next if items.item_at x, y
       drop_item Treasure.new(self, x, y)
+
+      # drop guard near most treasures
+      next if rand(4) == 0
+      add_guard_guarding(x, y)
+    end
+
+    rand(10..20).times do
+      x, y = rand(0..@width-1),rand(0..@height-1)
+      next unless @tiles[y][x] == '.'
+      next if mobs.mob_at x, y
+      #d "mob at #{x},#{y}"
+      mobs << StandingGuard.new(self, x, y, rand(0..7))
+    end
+
+    # add guards guarding guards :)
+    rand(3..8).times do
+      mob = mobs.sample
+      add_guard_guarding mob.x, mob.y
     end
 
     d_map
@@ -149,6 +168,15 @@ class GenMap < Map
       x, y = [rand(0..@width-1), rand(0..@height-1)]
     end
     $X, $Y = x, y # terrible hack to make sure player is in bounds
+  end
+
+  def add_guard_guarding(guard_x, guard_y)
+    x, y = 0,0
+    x, y = guard_x + rand(-5..5), guard_y + rand(-5..5) while !in_bounds(x, y) or @tiles[y][x] != '.'
+    #d "guard mob at #{x},#{y}"
+    guard = StandingGuard.new(self, x, y, 0)
+    guard.direction = guard.direction_to(guard_x, guard_y)
+    mobs << guard
   end
 
   def d_map

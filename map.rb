@@ -10,10 +10,14 @@ class Map
   # Takes an array of strings: . is ground and # is wall. Assumes rectilinearity.
   # This will be elaborated upon greatly in the future, and probably use NArray.
   def initialize(time)
-    @mobs = nil
+    @mobs = Mobs.new
     @time = time
     @sounds = {}
     @items = Items.new
+  end
+
+  def in_bounds(x, y)
+    x > 0 and x < @width - 1 and y > 0 and y < @height - 1
   end
 
   def turn

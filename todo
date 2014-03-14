@@ -27,8 +27,9 @@ x treasure
 x world generation
 x generate doors
 x generate treasure in map
-  generate mobs in map
+x generate mobs in map
   multiple floors
+  keypad keys for movement
   score: print floor, turns, and guards knocked out
   guards that wander
   guards angry at finding bodies
