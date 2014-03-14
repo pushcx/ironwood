@@ -28,6 +28,7 @@ x world generation
 x generate doors
 x generate treasure in map
 x generate mobs in map
+  visibility crash bug
   multiple floors
   keypad keys for movement
   score: print floor, turns, and guards knocked out
