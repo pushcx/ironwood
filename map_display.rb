@@ -28,6 +28,7 @@ class MapDisplay
   end
 
   def xy_to_colrow x, y
+    d "#{x},#{y}" if x.nil? or y.nil?
     return (x - player.fov.actor_x) + (width / 2), (y - player.fov.actor_y) + (height / 2)
   end
 
@@ -53,6 +54,7 @@ class MapDisplay
 
     # third pass, add items
     map.items_seen_by(player).each do |item|
+    #map.items.each do |item|
       col, row = xy_to_colrow item.x, item.y
       lines[row][col] = item.tile
     end

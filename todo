@@ -26,7 +26,7 @@ x treasure
 
 x world generation
 x generate doors
-  generate treasure in map
+x generate treasure in map
   generate mobs in map
   multiple floors
   score: print floor, turns, and guards knocked out
@@ -39,6 +39,7 @@ x generate doors
   colorize instructions
   older sounds should be dark green
   screen resizing
+  bug: proper treasure generation so it clumps in rooms
 
   door open/closing
   door locking, unlocking, picking

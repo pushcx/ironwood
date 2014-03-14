@@ -111,28 +111,35 @@ class GenMap < Map
     # trim off unused rows
     empty_row = '#' * @width
     @tiles.shift while @tiles[1] == empty_row
+    taken_y = @height - @tiles.length
     @tiles.pop while @tiles[-2] == empty_row
-    before_height = @height
     @height = @tiles.length
-    taken_y = @height - before_height
 
     leftmost = @rooms.map(&:left).min
+    taken_x = leftmost - 1
     rightmost = @rooms.map(&:right).max
     @tiles.each_with_index do |row, i|
       @tiles[i] = row.slice(leftmost-1, rightmost - leftmost + 3)
     end
-    before_width = @width
     @width = @tiles.first.length
-    taken_x = @width - before_width
 
     # update room coords for mob gen
-    @rooms.each_with_index do |room, i|
-      @rooms[i] = Room.new(
-        room.top - taken_y,
-        room.bottom - taken_y,
-        room.left - taken_x,
-        room.right - taken_y
-      )
+    # this is beeroken
+    #@rooms.each_with_index do |room, i|
+    #  r = Room.new(
+    #    room.top - taken_y,
+    #    room.bottom - taken_y,
+    #    room.left - taken_x,
+    #    room.right - taken_y
+    #  )
+    #  @rooms[i] = r
+    #end
+
+    rand(20..50).times do
+      x, y = rand(0..@width-1),rand(0..@height-1)
+      next unless @tiles[y][x] == '.'
+      next if items.item_at x, y
+      drop_item Treasure.new(self, x, y)
     end
 
     d_map
