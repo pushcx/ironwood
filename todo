@@ -25,10 +25,15 @@ x instructions on opening screen
 x treasure
 
 x world generation
+  generate doors
+  generate treasure in map
+  generate mobs in map
   multiple floors
-  guards that wander buildings
+  score: print floor, turns, and guards knocked out
+  guards that wander
   guards angry at finding bodies
   bug: guards can walk into each other
+
   noisemakers
   colorize instructions
   older sounds should be dark green
