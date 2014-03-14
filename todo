@@ -25,7 +25,7 @@ x instructions on opening screen
 x treasure
 
 x world generation
-  generate doors
+x generate doors
   generate treasure in map
   generate mobs in map
   multiple floors
@@ -33,6 +33,7 @@ x world generation
   guards that wander
   guards angry at finding bodies
   bug: guards can walk into each other
+  comment out debugger and map regen
 
   noisemakers
   colorize instructions

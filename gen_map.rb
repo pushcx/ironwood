@@ -48,6 +48,9 @@ class GenMap < Map
         (bottom..from.top).each do |y|
           @tiles[y][x] = '.'
         end
+        if from.top - bottom == 2 and @tiles[bottom+1][x - 1] == '#' and @tiles[bottom+1][x + 1] == '#'
+          @tiles[bottom + 1][x] = '+'
+        end
       when 1 # bottom
         top = from.bottom + ROOM_DISTANCES.sample
         height = rand(MIN_DIM..MAX_DIM)
@@ -62,6 +65,9 @@ class GenMap < Map
         x = rand([left, from.left].max..[right, from.right].min)
         (from.bottom..top).each do |y|
           @tiles[y][x] = '.'
+        end
+        if top - from.bottom == 2 and @tiles[top-1][x - 1] == '#' and @tiles[top-1][x + 1] == '#'
+          @tiles[top - 1][x] = '+'
         end
       when 2 # left
         right = from.left - ROOM_DISTANCES.sample
@@ -78,6 +84,9 @@ class GenMap < Map
         (right..from.left).each do |x|
           @tiles[y][x] = '.'
         end
+        if from.left - right == 2 and @tiles[y][right + 1] == '#' and @tiles[y][right + 1] == '#'
+          @tiles[y][right + 1] = '+'
+        end
       when 3 # right
         left = from.right + ROOM_DISTANCES.sample
         width = rand(MIN_DIM..MAX_DIM)
@@ -92,6 +101,9 @@ class GenMap < Map
         y = rand([top, from.top].max..[bottom, from.bottom].min)
         (from.right..left).each do |x|
           @tiles[y][x] = '.'
+        end
+        if left - from.right == 2 and @tiles[y][left - 1] == '#' and @tiles[y][left - 1] == '#'
+          @tiles[y][left - 1] = '+'
         end
       end
     end
