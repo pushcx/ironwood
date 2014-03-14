@@ -65,11 +65,11 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.init_screen
       Curses.noecho
       Curses.nonl
-    when 'g'
-      game.map.generate
-      game.player.x, game.player.y = $X, $Y
-      game.player.on_new_map(game.map, $X, $Y, game.player.direction)
-      game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
+    #when 'g'
+    #  game.map.generate
+    #  game.player.x, game.player.y = $X, $Y
+    #  game.player.on_new_map(game.map, $X, $Y, game.player.direction)
+    #  game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
     when ' ','.'
       game.player.act :rest
       game.turn
