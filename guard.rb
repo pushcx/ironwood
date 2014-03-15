@@ -86,8 +86,8 @@ class Guard < Mob
     event(:lost_player) { transition :hunting => :walking }
     event(:order_walk)  { transition all => :walking }
     event(:stand_guard) { transition [:stunned, :hunting, :walking] => :standing_guard }
-    event(:yell) { transition [:walking, :standing_guard] => :yelling }
-    event(:hunt) { transition [:walking, :standing_guard, :raging, :yelling] => :hunting }
+    event(:yell) { transition [:stunned, :walking, :standing_guard] => :yelling }
+    event(:hunt) { transition [:stunned, :walking, :standing_guard, :raging, :yelling] => :hunting }
     event(:rage) { transition all => :raging }
     event(:smokebomb) { transition all => :stunned }
 
