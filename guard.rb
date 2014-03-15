@@ -19,6 +19,8 @@ class Guard < Mob
   def color ; hunting? ? '#ff0000' : '#9990ff' ; end
 
   def order_walk_to x, y
+    # can't get there, skip
+    return if direction_to(x, y).nil?
     order_walk!
     @dest_x, @dest_y = x, y
   end

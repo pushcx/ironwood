@@ -169,9 +169,9 @@ class GenMap < Map
 
     # make some guards patrol
     x = y = 0
-    x, y = rand(0..@width-1), rand(0..@height-1) until available?(x, y)
-    (1..5).times do |mob|
+    rand(1..5).times do |mob|
       mob = mobs.sample
+      x, y = rand((mob.x-15)..(mob.x+15)), rand((mob.y-15)..(mob.y+15)) until available?(x, y)
       mob.patrol_x, mob.patrol_y = x, y
       mob.order_walk_to x, y
     end
