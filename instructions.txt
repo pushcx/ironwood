@@ -16,6 +16,7 @@ b j n   ↙ ↓ ↘   1 2 3
 
 Knock out guards by moving into them
 ...when they're not angry
+(but when they're angry, they're not even listening...)
 
 Next to a body? Type 'd' to drag it
 

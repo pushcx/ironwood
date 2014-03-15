@@ -46,10 +46,18 @@ module Movement
   end
 
   def walk_towards x, y
-    result = Pathfinder.new(map, { x: self.x, y: self.y }, { x: x, y: y }).search
-    result.shift # pop off current location
+    result = map.pathfinding_cache[ [self.x,self.y,x,y] ]
+    result ||= Pathfinder.new(map, { x: self.x, y: self.y }, { x: x, y: y }).search
+    # cache the hell out of long routes
+    result.each_with_index do |step, i|
+      map.pathfinding_cache[ [step.x,step.y,x,y] ] ||= result[i..-1]
+    end
+    # bug in astar, when pathfinding to one square from current location it
+    # will return just [dest] rather than include the origin like it does on
+    # every other search
+    result.shift if result.first.x == self.x and result.first.y == self.y
     #d "xy #{result.first.x},#{result.first.y} dir #{direction_to(result.first.x, result.first.y)}"
-    d "that bug you can't repro in walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
+    d "that pathfinding bug you thought you fixed walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
     return if result.empty? # already there
     move(direction_to(result.first.x, result.first.y))
   end

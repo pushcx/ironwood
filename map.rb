@@ -4,7 +4,7 @@ module Ironwood
 
 # Basic map storage.
 class Map
-  attr_reader :width, :height, :time, :sounds, :items
+  attr_reader :width, :height, :time, :sounds, :items, :pathfinding_cache
   attr_accessor :mobs
 
   # Takes an array of strings: . is ground and # is wall. Assumes rectilinearity.
@@ -14,6 +14,7 @@ class Map
     @time = time
     @sounds = {}
     @items = Items.new
+    @pathfinding_cache = {}
   end
 
   def in_bounds(x, y)

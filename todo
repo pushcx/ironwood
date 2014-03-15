@@ -36,18 +36,21 @@ x multiple floors
 x keypad keys for movement
 x score: print floor, turns, and guards knocked out
 x readme
-x guards that wander
-  trap doors
+x guards that patrol
+  trapdoors
   guards angry at finding bodies
   bug: guards can walk into each other
+  scale number of guards to size of level
   comment out debugger and map regen
   package for osx/windows?
+  bug: astar bug that sometimes return short list, see walk_towards
 
   noisemakers
   colorize instructions
   older sounds should be dark green
   screen resizing
-  bug: proper treasure generation so it clumps in rooms
+  feature: proper treasure generation so it clumps in rooms
+  bug: direction_to sometimes returns nil
 
   door open/closing
   door locking, unlocking, picking

@@ -171,9 +171,10 @@ class GenMap < Map
     x = y = 0
     rand(1..5).times do |mob|
       mob = mobs.sample
-      x, y = rand((mob.x-15)..(mob.x+15)), rand((mob.y-15)..(mob.y+15)) until available?(x, y)
-      mob.patrol_x, mob.patrol_y = x, y
-      mob.order_walk_to x, y
+      radius = 30
+      x, y = rand((mob.x-radius)..(mob.x+radius)), rand((mob.y-radius)..(mob.y+radius)) until available?(x, y)
+      mob.order_patrol_to x, y
+      #d "#{mob.object_id} should patrol from #{mob.x},#{mob.y} to #{x},#{y}"
     end
 
     #d_map

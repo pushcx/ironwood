@@ -6,7 +6,6 @@ class Guard < Mob
   attr_reader :x, :y, :direction
   attr_reader :state
   attr_reader :post_x, :post_y, :post_direction, :dest_x, :dest_y
-  attr_accessor :patrol_x, :patrol_y
 
   def initialize map, x, y, direction
     super
@@ -23,6 +22,11 @@ class Guard < Mob
     return if direction_to(x, y).nil?
     order_walk!
     @dest_x, @dest_y = x, y
+  end
+
+  def order_patrol_to x, y
+    @patrol_x, @patrol_y = x, y
+    order_walk_to x, y
   end
 
   def spot? player
@@ -75,7 +79,7 @@ class Guard < Mob
 
     state :hunting do
       def turn
-        #d "  at #{x},#{y} #{state} to #{@dest_x},#{dest_y}"
+        #d "#{self.object_id}  at #{x},#{y} #{state} to #{@dest_x},#{@dest_y}" if patrolling?
         walk_towards @dest_x, @dest_y
         act :move
         player = map.mobs.player
@@ -94,23 +98,28 @@ class Guard < Mob
 
     state :walking do
       def turn
+        #d "#{self.object_id}  at #{x},#{y} #{state} (#{walk_cycle_state}, #{peek_cycle_state}) to #{@dest_x},#{@dest_y}" if patrolling?
         #d "at #{x},#{y} #{state} (#{walk_cycle_state}, #{peek_cycle_state}) to #{@dest_x},#{dest_y}"
         walk_cycle_turn
         walk_cycle_step!
       end
 
       def decide_arrived?
-        if at_destination?
-          if at_post?
-            if patrolling?
-              order_walk_to patrol_x, patrol_y
-            else
-              stand_guard!
-              self.direction = post_direction
-            end
+        return unless at_destination?
+        #d "#{self.object_id} reached destination #{@dest_x},#{@dest_y}"
+
+        if at_post?
+          #d "#{self.object_id} is at post #{@post_x},#{@post_y}"
+          if patrolling?
+            #d "#{self.object_id} ordering to patrol #{@patrol_x},#{@patrol_y}"
+            order_walk_to @patrol_x, @patrol_y
           else
-            order_walk_to post_x, post_y
+            stand_guard!
+            self.direction = post_direction
           end
+        else
+          #d "#{self.object_id} is NOT at post; ordering to post #{@post_x},#{@post_y}"
+          order_walk_to @post_x, @post_y
         end
       end
     end
@@ -121,11 +130,11 @@ class Guard < Mob
   end
 
   def at_post?
-    x == @dest_x and y == @dest_y
+    x == @post_x and y == @post_y
   end
 
   def at_patrol?
-    x == @patrol_x and y == @patrol_x
+    x == @patrol_x and y == @patrol_y
   end
 
   def patrolling?
@@ -164,13 +173,18 @@ class Guard < Mob
 
     state :right do
       def peek_cycle_turn
-        self.direction = direction_offset(direction_to(@dest_x, @dest_y),  1)
+        # papering over a bug here, sometimes direction_to is returning nil
+        dir = direction_to(@dest_x, @dest_y)
+        return if dir.nil?
+        self.direction = direction_offset(dir,  1)
       end
     end
 
     state :left do
       def peek_cycle_turn
-        self.direction = direction_offset(direction_to(@dest_x, @dest_y), -1)
+        dir = direction_to(@dest_x, @dest_y)
+        return if dir.nil?
+        self.direction = direction_offset(dir, -1)
       end
     end
   end
