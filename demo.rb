@@ -34,14 +34,32 @@ end
 module Ironwood
 
 keys_to_directions = {
-  'k' =>  DIR_N,
-  'u' =>  DIR_NE,
-  'l' =>  DIR_E,
-  'n' =>  DIR_SE,
-  'j' =>  DIR_S,
-  'b' =>  DIR_SW,
-  'h' =>  DIR_W,
-  'y' =>  DIR_NW,
+  'k' => DIR_N,
+  'u' => DIR_NE,
+  'l' => DIR_E,
+  'n' => DIR_SE,
+  'j' => DIR_S,
+  'b' => DIR_SW,
+  'h' => DIR_W,
+  'y' => DIR_NW,
+
+  :up        => DIR_N,
+  :page_up   => DIR_NE,
+  :right     => DIR_E,
+  :page_down => DIR_SE,
+  :down      => DIR_S,
+  :end       => DIR_SW,
+  :left      => DIR_W,
+  :home      => DIR_NW,
+
+  "^Ox" => DIR_N,
+  349   => DIR_NE,
+  "^Ov" => DIR_E,
+  352   => DIR_SE,
+  "^Or" => DIR_S,
+  351   => DIR_SW,
+  "^Ot" => DIR_W,
+  348   => DIR_NW,
 }
 
 at_exit do
@@ -53,6 +71,7 @@ Dispel::Screen.open(colors: true) do |screen|
 
   screen.draw File.read('instructions.txt').split("\n").map { |l| l.center(screen.columns) }.join("\n"), [], [0,0]
   Dispel::Keyboard.output do |key| # main game loop
+    #d "#{key} #{key.class} #{key.length if key.respond_to? :length}"
     exit if game.game_over
     case key
     when :"Ctrl+c"
@@ -69,7 +88,7 @@ Dispel::Screen.open(colors: true) do |screen|
       game.map = GenMap.new(game.time)
       game.player.on_new_map(game.map, $X, $Y, game.player.direction)
       game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
-    when ' ','.'
+    when ' ','.',350,'5'
       game.player.act :rest
       game.turn
     when 'd'
