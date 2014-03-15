@@ -16,12 +16,6 @@ class Mob
     @last_actions = []
   end
 
-#  def x=
-#    # update fov?
-#  end
-#  def y=
-#  end
-
   def direction= direction
     raise "attempt to set nil direction" if direction.nil?
     @direction = direction
@@ -37,13 +31,13 @@ class Mob
     else
       last_actions << action
     end
-    last_actions.shift while last_actions.count > 3
+    last_actions.shift while last_actions.count > 5
     map.make_sound Sound.new(self, :drag) if action == :drag and noise_count >= 3
-    map.make_sound Sound.new(self, :run)  if action == :move and noise_count >= 3
+    map.make_sound Sound.new(self, :run)  if action == :move and noise_count >= 5
   end
 
   def running?
-    last_actions == [:move, :move, :move]
+    last_actions == [:move, :move, :move, :move, :move]
   end
 
   def noise_count
