@@ -5,11 +5,13 @@ Floor = Struct.new :treasures, :guards, :finished_at
 
 class Score
   attr_reader :floor, :floors, :time
+  attr_accessor :smokebombs
 
   def initialize time
     @time = time
     @floor = 0
     @floors = [Floor.new(0, 0, 0)]
+    @smokebombs = 0
     new_floor
   end
 
@@ -56,6 +58,10 @@ class Score
     puts
     puts "TOTAL#{total_treasures.to_s.rjust(5)}#{total_guards.to_s.rjust(5)}#{time.tick.to_s.rjust(6)}"
     puts
+    if smokebombs > 0
+      puts "...and the worst part is, you still had #{smokebombs} smokebomb#{smokebombs > 1 ? 's' : ' : '''}"
+      puts
+    end
   end
 end
 

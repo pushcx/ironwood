@@ -19,6 +19,7 @@ class Game
   def turn
     # player's turn happens implicitly in demo - should prob move here
     map.turn
+    score.smokebombs = player.smokebombs
 
     # player has moved onto mob to knock it out
     if mob = map.mobs.mob_at_player
