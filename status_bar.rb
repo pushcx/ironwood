@@ -9,7 +9,7 @@ class StatusBar
   end
 
   def view game
-    "Player | Noise: _-^! | Time #{game.time.tick} | x/y debug (#{game.player.x}, #{game.player.y})"
+    "Player | Noise: _-^! | #{game.score.statusline}"
   end
 
   def style_map

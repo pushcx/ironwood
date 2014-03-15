@@ -12,7 +12,7 @@ class Game
     @map = GenMap.new(time)
     @player = Player.new map, $X, $Y, DIR_E
     @map_display = MapDisplay.new(map, screen_width, screen_height - 1)
-    @score = 0
+    @score = Score.new time
   end
 
   def turn
@@ -22,14 +22,15 @@ class Game
     # player has moved onto mob to knock it out
     if mob = map.mobs.mob_at_player
       return @game_over = true if mob.hunting? # can't knock out alert guards
+      score.guard
       map.mobs.delete mob
       map.drop_item Body.new(map, mob.x, mob.y)
     end
 
     # player has moved onto treasure to pick it up
     if item = map.items.item_at(player.x, player.y) and item.is_a? Treasure
+      score.treasure
       map.items.delete item
-      @score += 1
     end
 
     map.mobs.enemies.each do |mob|

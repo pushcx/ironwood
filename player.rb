@@ -7,7 +7,6 @@ class Player < Mob
 
   def initialize map, x, y, direction
     super
-    @floor = 0
     on_new_map(map, x, y, direction)
   end
 
@@ -18,7 +17,6 @@ class Player < Mob
     @x = x
     @y = y
     @direction = direction
-    @floor += 1
     @fov = Visibility::FieldOfView.new(map, x, y, direction, Visibility::ShadowCasting, PLAYER_VIEW_RADIUS)
   end
 

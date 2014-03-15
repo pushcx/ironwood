@@ -34,7 +34,7 @@ x bug: sometimes appear in wall after generating level
 x remove any guard within radius 10 of player
 x multiple floors
 x keypad keys for movement
-  score: print floor, turns, and guards knocked out
+x score: print floor, turns, and guards knocked out
   guards that wander
   guards angry at finding bodies
   bug: guards can walk into each other

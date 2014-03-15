@@ -19,6 +19,7 @@ require_relative 'map_display'
 require_relative 'map_memory'
 require_relative 'mobs'
 require_relative 'player'
+require_relative 'score'
 require_relative 'status_bar'
 require_relative 'staircase'
 require_relative 'sound'
@@ -64,7 +65,7 @@ keys_to_directions = {
 }
 
 at_exit do
-  puts "Score: #{$SCORE}"
+  $SCORE.print_final
 end
 Dispel::Screen.open(colors: true) do |screen|
   game = Game.new(screen.columns, screen.lines)
@@ -86,10 +87,12 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.noecho
       Curses.nonl
     when 'g'
+      game.score.new_floor
       game.map = GenMap.new(game.time)
       game.player.on_new_map(game.map, $X, $Y, game.player.direction)
       game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
     when '>'
+      game.score.new_floor
       item = game.map.items.item_at? game.player.x, game.player.y
       next unless item and item.is_a? Staircase
       game.map = GenMap.new(game.time)
@@ -117,7 +120,7 @@ Dispel::Screen.open(colors: true) do |screen|
     screen.draw *game.display
 
     if game.game_over
-      screen.draw "Game Over - a guard caught you - score #{game.score}", Dispel::StyleMap.single_line_reversed(screen.columns), [0,0]
+      screen.draw "Game Over - a guard caught you", Dispel::StyleMap.single_line_reversed(screen.columns), [0,0]
       $SCORE = game.score
     end
 
