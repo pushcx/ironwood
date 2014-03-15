@@ -40,6 +40,7 @@ class Game
     end
 
     map.mobs.enemies.each do |mob|
+      next if [ (mob.x - player.x).abs, (mob.y - player.y).abs ].max > 20 # performance hack
       mob.decide_state(player)
       #d " - chose #{mob.state}, dest #{mob.dest_x},#{mob.dest_y}"
       mob.turn
