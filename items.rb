@@ -13,7 +13,9 @@ class Items
   end
 
   def trapdoor_at x, y
-    return item_at x, y
+    item = item_at x, y
+    return item if item.is_a? Trapdoor
+    nil
   end
 
   def item_at x, y
