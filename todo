@@ -35,10 +35,12 @@ x remove any guard within radius 10 of player
 x multiple floors
 x keypad keys for movement
 x score: print floor, turns, and guards knocked out
+x readme
   guards that wander
   guards angry at finding bodies
   bug: guards can walk into each other
   comment out debugger and map regen
+  package for osx/windows?
 
   noisemakers
   colorize instructions
