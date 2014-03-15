@@ -37,6 +37,15 @@ class Guard < Mob
     true
   end
 
+  def see_body?
+    map.items_seen_by(self).each do |item|
+      next unless item.is_a? Body
+      @dest_x, @dest_y = item.x, item.y
+      rage!
+    end
+    false
+  end
+
   def hear? player
     return false if hunting? # can't hear when running
     sound = map.sound_heard_by(self)
@@ -50,6 +59,7 @@ class Guard < Mob
   def decide_state(player)
     #d "decide_state #{self.tile} (#{state}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y})"
     return if spot? player
+    return if see_body?
     return if hear? player
     return if standing_guard?
 
@@ -61,7 +71,8 @@ class Guard < Mob
     event(:order_walk)  { transition all => :walking }
     event(:stand_guard) { transition [:hunting, :walking] => :standing_guard }
     event(:yell) { transition [:walking, :standing_guard] => :yelling }
-    event(:hunt) { transition [:walking, :standing_guard, :yelling] => :hunting }
+    event(:hunt) { transition [:walking, :standing_guard, :raging, :yelling] => :hunting }
+    event(:rage) { transition all => :raging }
 
     state :standing_guard do
       def turn
@@ -86,13 +97,31 @@ class Guard < Mob
         @dest_x, @dest_y = player.x, player.y if fov.visible? player.x, player.y
       end
 
+
       def decide_arrived?
-        #d "hunting:decide_arrived? #{x},#{y} #{@dest_x},#{@dest_y}"
-        if at_destination?
-          lost_player!
-          @dest_x, @dest_y = post_x, post_y
-          ##d  "  - yep, arrived, new dest is #{@dest_x},#{@dest_y} #{state}"
-        end
+        return unless at_destination?
+
+        lost_player!
+        @dest_x, @dest_y = post_x, post_y
+        ##d  "  - yep, arrived, new dest is #{@dest_x},#{@dest_y} #{state}"
+      end
+    end
+
+    state :raging do
+      def turn
+        #d "#{self.object_id}  at #{x},#{y} #{state} to #{@dest_x},#{@dest_y}"
+        map.make_sound Sound.new(self, :yell) if rand(5) == 0
+        walk_towards @dest_x, @dest_y
+        act :move
+        player = map.mobs.player
+        @dest_x, @dest_y = player.x, player.y if fov.visible? player.x, player.y
+      end
+
+      def decide_arrived?
+        return false unless at_destination?
+        player = map.mobs.player
+        @dest_x, @dest_y = player.x, player.y
+        hunt!
       end
     end
 

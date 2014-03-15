@@ -11,7 +11,6 @@ class Game
 
     @map = GenMap.new(time)
     @player = Player.new map, $X, $Y, DIR_E
-    @map.drop_item Trapdoor.new(self, $X+1, $Y)
     @screen_width, @screen_height = screen_width, screen_height
     @map_display = MapDisplay.new(map, @screen_width, @screen_height - 1)
     @score = Score.new time
@@ -52,6 +51,7 @@ class Game
   end
 
   def new_floor
+    @player.act :rest
     @score.new_floor
     @map = GenMap.new(time)
     @player.on_new_map(map, $X, $Y, @player.direction)
