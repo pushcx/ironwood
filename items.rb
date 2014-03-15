@@ -12,6 +12,10 @@ class Items
     @list = list
   end
 
+  def trapdoor_at x, y
+    return item_at x, y
+  end
+
   def item_at x, y
     each do |item|
       return item if item.x == x and item.y == y

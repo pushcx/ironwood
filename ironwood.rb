@@ -24,6 +24,7 @@ require_relative 'status_bar'
 require_relative 'staircase'
 require_relative 'sound'
 require_relative 'string_map'
+require_relative 'trapdoor'
 require_relative 'treasure'
 require_relative 'game_time'
 
@@ -92,12 +93,9 @@ Dispel::Screen.open(colors: true) do |screen|
       game.player.on_new_map(game.map, $X, $Y, game.player.direction)
       game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
     when '>'
-      game.score.new_floor
-      item = game.map.items.item_at? game.player.x, game.player.y
+      item = map.items.item_at? game.player.x, game.player.y
       next unless item and item.is_a? Staircase
-      game.map = GenMap.new(game.time)
-      game.player.on_new_map(game.map, $X, $Y, game.player.direction)
-      game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
+      game.new_floor
     when ' ','.',350,'5'
       game.player.act :rest
       game.turn

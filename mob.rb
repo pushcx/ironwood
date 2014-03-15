@@ -42,6 +42,10 @@ class Mob
     map.make_sound Sound.new(self, :run)  if action == :move and noise_count >= 3
   end
 
+  def running?
+    last_actions == [:move, :move, :move]
+  end
+
   def noise_count
     last_actions.inject(0) do |acc, action|
       case action

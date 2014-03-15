@@ -37,7 +37,7 @@ x keypad keys for movement
 x score: print floor, turns, and guards knocked out
 x readme
 x guards that patrol
-  trapdoors
+x trapdoors
   guards angry at finding bodies
   bug: guards can walk into each other
   scale number of guards to size of level

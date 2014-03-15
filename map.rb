@@ -47,7 +47,7 @@ class Map
   end
 
   def items_seen_by mob
-    items.select { |i| mob.fov.visible? i.x, i.y }
+    items.select { |i| mob.fov.visible? i.x, i.y and (!i.is_a?(Trapdoor) or !mob.running?) }
   end
 
   # Returns the tile at coordinates x, y.

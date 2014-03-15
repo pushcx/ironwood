@@ -169,7 +169,7 @@ class GenMap < Map
 
     # make some guards patrol
     x = y = 0
-    rand(1..5).times do |mob|
+    rand(1..5).times do
       mob = mobs.sample
       radius = 30
       x, y = rand((mob.x-radius)..(mob.x+radius)), rand((mob.y-radius)..(mob.y+radius)) until available?(x, y)
@@ -178,6 +178,11 @@ class GenMap < Map
     end
 
     #d_map
+    rand(3..6).times do
+      x = y = 0
+      x, y = rand(0..@width-1),rand(0..@height-1) until available?(x, y)
+      drop_item Trapdoor.new(self, x, y)
+    end
 
     #d 'put player in bounds'
     x, y = 0, 0

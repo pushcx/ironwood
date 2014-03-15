@@ -13,6 +13,8 @@ h   l   ←   →   4   6
 b j n   ↙ ↓ ↘   1 2 3
 
 > on a staircase for the next floor down
+^ Trapdoors drop you to the next floor,
+but you can't see them when you're running
 
 Knock out guards by moving into them
 ...when they're not angry

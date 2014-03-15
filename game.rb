@@ -11,7 +11,9 @@ class Game
 
     @map = GenMap.new(time)
     @player = Player.new map, $X, $Y, DIR_E
-    @map_display = MapDisplay.new(map, screen_width, screen_height - 1)
+    @map.drop_item Trapdoor.new(self, $X+1, $Y)
+    @screen_width, @screen_height = screen_width, screen_height
+    @map_display = MapDisplay.new(map, @screen_width, @screen_height - 1)
     @score = Score.new time
   end
 
@@ -33,6 +35,11 @@ class Game
       map.items.delete item
     end
 
+    # player on trapdoor
+    if map.items.trapdoor_at(player.x, player.y)
+      new_floor
+    end
+
     map.mobs.enemies.each do |mob|
       mob.decide_state(player)
       #d " - chose #{mob.state}, dest #{mob.dest_x},#{mob.dest_y}"
@@ -42,6 +49,13 @@ class Game
       @game_over = true if map.mobs.mob_at_player?
     end
     time.advance
+  end
+
+  def new_floor
+    @score.new_floor
+    @map = GenMap.new(time)
+    @player.on_new_map(map, $X, $Y, @player.direction)
+    @map_display = MapDisplay.new(map, @screen_width, @screen_height - 1)
   end
 
   def display
