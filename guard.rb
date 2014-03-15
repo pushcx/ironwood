@@ -6,16 +6,26 @@ class Guard < Mob
   attr_reader :x, :y, :direction
   attr_reader :state
   attr_reader :post_x, :post_y, :post_direction, :dest_x, :dest_y
+  attr_accessor :stun
 
   def initialize map, x, y, direction
     super
     @post_x, @post_y, @post_direction = x, y, direction
     @dest_x, @dest_y = nil, nil
     @patrol_x, @patrol_y = nil, nil
+    @stun = 0
   end
 
   def tile ; 'G' ; end
-  def color ; hunting? ? '#ff0000' : '#9990ff' ; end
+  def color
+    if raging? or hunting?
+      '#ff0000'
+    elsif stunned?
+      '#ffff00'
+    else
+      '#9990ff'
+    end
+  end
 
   def order_walk_to x, y
     # can't get there, skip
@@ -27,6 +37,10 @@ class Guard < Mob
   def order_patrol_to x, y
     @patrol_x, @patrol_y = x, y
     order_walk_to x, y
+  end
+
+  def stunned?
+    @stun > 0
   end
 
   def spot? player
@@ -58,6 +72,8 @@ class Guard < Mob
 
   def decide_state(player)
     #d "decide_state #{self.tile} (#{state}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y})"
+    @stun -= 1
+    return if stunned?
     return if spot? player
     return if see_body?
     return if hear? player
@@ -69,10 +85,31 @@ class Guard < Mob
   state_machine :state, initial: :standing_guard do
     event(:lost_player) { transition :hunting => :walking }
     event(:order_walk)  { transition all => :walking }
-    event(:stand_guard) { transition [:hunting, :walking] => :standing_guard }
+    event(:stand_guard) { transition [:stunned, :hunting, :walking] => :standing_guard }
     event(:yell) { transition [:walking, :standing_guard] => :yelling }
     event(:hunt) { transition [:walking, :standing_guard, :raging, :yelling] => :hunting }
     event(:rage) { transition all => :raging }
+    event(:smokebomb) { transition all => :stunned }
+
+    after_transition any => :stunned do |mob, transition|
+      mob.stun += 8
+    end
+
+    state :stunned do
+      def turn
+        #d "stunned mob #{x},#{y} ignores turn #{stun}"
+      end
+      def decide_arrived?
+        return if stun > 0
+        if have_destination?
+          order_walk_to(@dest_x, @dest_y)
+        elsif !at_post?
+          order_walk_to(@post_x, @post_y)
+        else
+          stand_guard!
+        end
+      end
+    end
 
     state :standing_guard do
       def turn
@@ -156,6 +193,10 @@ class Guard < Mob
 
   def at_destination?
     x == @dest_x and y == @dest_y
+  end
+
+  def have_destination?
+    @dest_x and @dest_y
   end
 
   def at_post?

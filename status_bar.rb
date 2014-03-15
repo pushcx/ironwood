@@ -9,14 +9,14 @@ class StatusBar
   end
 
   def view game
-    "Player | Noise: ._-^*! | #{game.score.statusline}"
+    "Smoke bombs: #{game.player.smokebombs.to_s.rjust(3)} | Noise: ._-^*! | #{game.score.statusline}"
   end
 
   def style_map
     style_map = Dispel::StyleMap.new(1)
     style_map.add(['#dddddd', '#222334'], 0, 0..80)
-    style_map.add(['#000000', '#dddddd'], 0, 16..(16 + game.player.noise_count))
-    style_map.add(['#000000', '#ff0000'], 0, 16..21) if game.player.noise_count >= 5
+    style_map.add(['#000000', '#dddddd'], 0, 26..(26 + game.player.noise_count))
+    style_map.add(['#000000', '#ff0000'], 0, 26..31) if game.player.noise_count >= 5
     style_map
   end
 end

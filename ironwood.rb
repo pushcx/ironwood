@@ -99,6 +99,12 @@ Dispel::Screen.open(colors: true) do |screen|
     when ' ','.',350,'5'
       game.player.act :rest
       game.turn
+    when 's'
+      game.map.mobs_seen_by(game.player).each do |mob|
+        mob.smokebomb!
+      end
+      game.player.act :stun
+      game.turn
     when 'd'
       body = game.map.items.body_near_player game.player
       next if not body

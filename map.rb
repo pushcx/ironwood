@@ -50,6 +50,10 @@ class Map
     items.select { |i| mob.fov.visible? i.x, i.y and (!i.is_a?(Trapdoor) or !mob.running?) }
   end
 
+  def mobs_seen_by mob
+    mobs.select { |m| mob.fov.visible? m.x, m.y and m != mob }
+  end
+
   # Returns the tile at coordinates x, y.
   # Tiles must eventually be their own objects.
   def tile(x, y)
