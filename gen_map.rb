@@ -15,8 +15,9 @@ class GenMap < Map
   end
 
   def generate
-    @sounds = {}
+    @mobs = Mobs.new
     @items = Items.new
+    @sounds = {}
 
     @rooms = []
     @width, @height = rand(20..500), rand(20..400)
@@ -136,22 +137,23 @@ class GenMap < Map
     #end
 
     # drop treasure
+    #d "#{@width}x#{@height}"
+    #d_map
     rand(60..90).times do
       x, y = rand(0..@width-1),rand(0..@height-1)
-      next unless @tiles[y][x] == '.'
-      next if items.item_at x, y
+      next unless available?(x, y)
       drop_item Treasure.new(self, x, y)
 
       # drop guard near most treasures
       next if rand(3) == 0
       add_guard_guarding(x, y)
     end
+    #d_map
 
-    rand(5..15).times do
-      x, y = rand(0..@width-1),rand(0..@height-1)
-      next unless @tiles[y][x] == '.'
-      next if mobs.mob_at x, y
-      #d "mob at #{x},#{y}"
+    rand(50..150).times do
+      x, y = rand(0..@width-1), rand(0..@height-1)
+      next unless available?(x, y)
+      #d "random at #{x},#{y} #{@tiles[y][x]}"
       mobs << StandingGuard.new(self, x, y, rand(0..7))
     end
 
@@ -161,27 +163,56 @@ class GenMap < Map
       add_guard_guarding mob.x, mob.y
     end
 
-    d_map
+    #d_map
 
+    #d 'put player in bounds'
     x, y = 0, 0
-    while @tiles[y][x] != '.' do
-      x, y = [rand(0..@width-1), rand(0..@height-1)]
-    end
+    x, y = [rand(0..@width-1), rand(0..@height-1)] while !available?(x,y)
     $X, $Y = x, y # terrible hack to make sure player is in bounds
+
+    #d_map
+
+    # remove any mobs near the player to give breathing room
+    ([0, (y - 8)].max..[@width - 1,(y + 8)].min).each do |y|
+      ([0, (x - 8)].max..[@width - 1,(x + 8)].min).each do |x|
+        next unless mob = mobs.mob_at(x, y)
+        mobs.delete mob
+      end
+    end
+    #d 'done'
   end
 
   def add_guard_guarding(guard_x, guard_y)
+    #d "add_guard_guarding(#{guard_x},#{guard_y})"
     x, y = 0,0
-    x, y = guard_x + rand(-5..5), guard_y + rand(-5..5) while !in_bounds(x, y) or @tiles[y][x] != '.'
-    #d "guard mob at #{x},#{y}"
+    x, y = guard_x + rand(-5..5), guard_y + rand(-5..5) while !available?(x,y)
+    #d "chose #{x},#{y} #{@tiles[y][x]}"
     guard = StandingGuard.new(self, x, y, 0)
     guard.direction = guard.direction_to(guard_x, guard_y)
     mobs << guard
   end
 
+  def available? x, y
+    in_bounds(x, y) and @tiles[y][x] == '.' and !mobs.mob_at(x,y) and !items.item_at(x,y)
+  end
+
   def d_map
-    @tiles.each do |row|
-      d row
+    @tiles.each_with_index do |row, y|
+      row.split('').each_with_index do |tile, x|
+        if items.item_at? x, y
+          $DEBUG.print '$'
+        elsif mobs.mob_at? x, y
+          if tile == '#'
+            $DEBUG.print '^'
+          else
+            $DEBUG.print 'G'
+          end
+
+        else
+          $DEBUG.print tile
+        end
+      end
+      $DEBUG.puts
     end
   end
 

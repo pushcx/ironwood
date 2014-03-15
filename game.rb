@@ -11,14 +11,6 @@ class Game
 
     @map = GenMap.new(time)
     @player = Player.new map, $X, $Y, DIR_E
-    @map.mobs = Mobs.new([ # ew circular referencing
-      @player,
-      #StandingGuard.new(map, 12, 3, DIR_SE),
-      #StandingGuard.new(map, 7, 3, DIR_S),
-    ])
-    #@map.mobs.list.last.order_walk_to(1, 1)
-    @map.drop_item Treasure.new(map, 3, 3)
-    @map.drop_item Treasure.new(map, 4, 2)
     @map_display = MapDisplay.new(map, screen_width, screen_height - 1)
     @score = 0
   end

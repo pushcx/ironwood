@@ -26,7 +26,7 @@ require_relative 'treasure'
 require_relative 'game_time'
 
 def d *s
-  $DEBUG = File.open('debug.log', 'a')
+  $DEBUG ||= File.open('debug.log', 'a')
   $DEBUG.puts *s
   $DEBUG.flush
 end
@@ -66,8 +66,7 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.noecho
       Curses.nonl
     when 'g'
-      game.map.generate
-      game.player.x, game.player.y = $X, $Y
+      game.map = GenMap.new(game.time)
       game.player.on_new_map(game.map, $X, $Y, game.player.direction)
       game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
     when ' ','.'

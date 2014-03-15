@@ -16,6 +16,17 @@ class Mob
     @last_actions = []
   end
 
+#  def x=
+#    # update fov?
+#  end
+#  def y=
+#  end
+
+  def direction= direction
+    raise "attempt to set nil direction" if direction.nil?
+    @direction = direction
+  end
+
   def player? ; false ; end
   def tile ; '‽' ; end
   def color ; '#800080' ; end

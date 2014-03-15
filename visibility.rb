@@ -82,6 +82,7 @@ module Visibility
 
     # Directions are numbered clockwise from N
     def calculate(radius)
+      #d "visibility bug, @direction is '#{@direction}', x,y #{actor_x},#{actor_y}",self.to_yaml if @direction.nil?
       [@direction, (@direction - 1 + 8) % 8].each do |oct|
         render_octant oct, radius
       end
@@ -130,6 +131,7 @@ module Visibility
 
     # Test if a tile is visible.
     def visible? x, y
+      #d "second vis bug, visible? #{x},#{y} but data is #{@data.length} rows" if @data[y].nil?
       @data[y][x] == @step or (x == actor_x and y == actor_y)
     end
 
