@@ -20,6 +20,7 @@ require_relative 'map_memory'
 require_relative 'mobs'
 require_relative 'player'
 require_relative 'status_bar'
+require_relative 'staircase'
 require_relative 'sound'
 require_relative 'string_map'
 require_relative 'treasure'
@@ -85,6 +86,12 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.noecho
       Curses.nonl
     when 'g'
+      game.map = GenMap.new(game.time)
+      game.player.on_new_map(game.map, $X, $Y, game.player.direction)
+      game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)
+    when '>'
+      item = game.map.items.item_at? game.player.x, game.player.y
+      next unless item and item.is_a? Staircase
       game.map = GenMap.new(game.time)
       game.player.on_new_map(game.map, $X, $Y, game.player.direction)
       game.map_display = MapDisplay.new(game.map, screen.columns, screen.lines - 1)

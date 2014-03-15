@@ -12,6 +12,8 @@ y k u   ↖ ↑ ↗   7 8 9
 h   l   ←   →   4   6
 b j n   ↙ ↓ ↘   1 2 3
 
+> on a staircase for the next floor down
+
 Knock out guards by moving into them
 ...when they're not angry
 

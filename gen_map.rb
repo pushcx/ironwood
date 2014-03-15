@@ -136,6 +136,10 @@ class GenMap < Map
     #  @rooms[i] = r
     #end
 
+    x, y = 0
+    x, y = rand(0..@width-1),rand(0..@height-1) until available?(x,y)
+    drop_item Staircase.new(self, x, y)
+
     # drop treasure
     #d "#{@width}x#{@height}"
     #d_map
