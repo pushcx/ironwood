@@ -100,6 +100,8 @@ Dispel::Screen.open(colors: true) do |screen|
       game.player.act :rest
       game.turn
     when 's'
+      next unless game.player.smokebombs > 0
+      game.player.smokebombs -= 1
       game.map.mobs_seen_by(game.player).each do |mob|
         mob.smokebomb!
       end

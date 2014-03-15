@@ -3,7 +3,8 @@ require_relative 'mob'
 module Ironwood
 
 class Player < Mob
-  attr_reader :floor, :smokebombs
+  attr_reader :floor
+  attr_accessor :smokebombs
 
   def initialize map, x, y, direction
     super

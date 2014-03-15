@@ -39,10 +39,6 @@ class Guard < Mob
     order_walk_to x, y
   end
 
-  def stunned?
-    @stun > 0
-  end
-
   def spot? player
     return false unless fov.visible? player.x, player.y
     #d " - spot at #{player.x},#{player.y}"
@@ -70,10 +66,14 @@ class Guard < Mob
     true
   end
 
+  def stun_remaining?
+    @stun -= 1 if @stun > 0
+    @stun > 0
+  end
+
   def decide_state(player)
-    #d "decide_state #{self.tile} (#{state}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y})"
-    @stun -= 1
-    return if stunned?
+    d "decide_state #{self.tile} (#{state} #{stun}) at (#{self.x},#{self.y}) dest (#{@dest_x},#{dest_y})"
+    return if stun_remaining?
     return if spot? player
     return if see_body?
     return if hear? player
@@ -92,7 +92,7 @@ class Guard < Mob
     event(:smokebomb) { transition all => :stunned }
 
     after_transition any => :stunned do |mob, transition|
-      mob.stun += 8
+      mob.stun += 9
     end
 
     state :stunned do
