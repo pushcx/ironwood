@@ -158,13 +158,22 @@ class GenMap < Map
       x, y = rand(0..@width-1), rand(0..@height-1)
       next unless available?(x, y)
       #d "random at #{x},#{y} #{@tiles[y][x]}"
-      mobs << StandingGuard.new(self, x, y, rand(0..7))
+      mobs << Guard.new(self, x, y, rand(0..7))
     end
 
     # add guards guarding guards :)
     rand(3..8).times do
       mob = mobs.sample
       add_guard_guarding mob.x, mob.y
+    end
+
+    # make some guards patrol
+    x = y = 0
+    x, y = rand(0..@width-1), rand(0..@height-1) until available?(x, y)
+    (1..5).times do |mob|
+      mob = mobs.sample
+      mob.patrol_x, mob.patrol_y = x, y
+      mob.order_walk_to x, y
     end
 
     #d_map
@@ -191,7 +200,7 @@ class GenMap < Map
     x, y = 0,0
     x, y = guard_x + rand(-5..5), guard_y + rand(-5..5) while !available?(x,y)
     #d "chose #{x},#{y} #{@tiles[y][x]}"
-    guard = StandingGuard.new(self, x, y, 0)
+    guard = Guard.new(self, x, y, 0)
     guard.direction = guard.direction_to(guard_x, guard_y)
     mobs << guard
   end

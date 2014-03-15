@@ -36,7 +36,8 @@ x multiple floors
 x keypad keys for movement
 x score: print floor, turns, and guards knocked out
 x readme
-  guards that wander
+x guards that wander
+  trap doors
   guards angry at finding bodies
   bug: guards can walk into each other
   comment out debugger and map regen

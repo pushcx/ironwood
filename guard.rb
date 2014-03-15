@@ -2,15 +2,17 @@ require_relative 'mob'
 
 module Ironwood
 
-class StandingGuard < Mob
+class Guard < Mob
   attr_reader :x, :y, :direction
   attr_reader :state
   attr_reader :post_x, :post_y, :post_direction, :dest_x, :dest_y
+  attr_accessor :patrol_x, :patrol_y
 
   def initialize map, x, y, direction
     super
     @post_x, @post_y, @post_direction = x, y, direction
     @dest_x, @dest_y = nil, nil
+    @patrol_x, @patrol_y = nil, nil
   end
 
   def tile ; 'G' ; end
@@ -98,11 +100,14 @@ class StandingGuard < Mob
       def decide_arrived?
         if at_destination?
           if at_post?
-            stand_guard!
-            self.direction = post_direction
+            if patrolling?
+              order_walk_to patrol_x, patrol_y
+            else
+              stand_guard!
+              self.direction = post_direction
+            end
           else
-            order_walk!
-            @dest_x, @dest_y = post_x, post_y
+            order_walk_to post_x, post_y
           end
         end
       end
@@ -115,6 +120,14 @@ class StandingGuard < Mob
 
   def at_post?
     x == @dest_x and y == @dest_y
+  end
+
+  def at_patrol?
+    x == @patrol_x and y == @patrol_x
+  end
+
+  def patrolling?
+    @patrol_x and @patrol_y
   end
 
   state_machine :walk_cycle_state, initial: :move do

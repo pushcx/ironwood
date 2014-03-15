@@ -73,7 +73,7 @@ Dispel::Screen.open(colors: true) do |screen|
 
   screen.draw File.read('instructions.txt').split("\n").map { |l| l.center(screen.columns) }.join("\n"), [], [0,0]
   Dispel::Keyboard.output do |key| # main game loop
-    d "#{key} #{key.class} #{key.length if key.respond_to? :length}"
+    #d "#{key} #{key.class} #{key.length if key.respond_to? :length}"
     exit if game.game_over
     case key
     when :"Ctrl+c"
