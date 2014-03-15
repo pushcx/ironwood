@@ -51,6 +51,7 @@ class Score
       print floor.guards.to_s.rjust(5)
       print (floor.finished_at - previous_tick).to_s.rjust(6)
       previous_tick = floor.finished_at
+      puts
     end
     puts
     puts "TOTAL#{total_treasures.to_s.rjust(5)}#{total_guards.to_s.rjust(5)}#{time.tick.to_s.rjust(6)}"
