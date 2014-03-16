@@ -28,7 +28,10 @@ require_relative 'trapdoor'
 require_relative 'treasure'
 require_relative 'game_time'
 
+$DEBUG_FLAG = ARGV.first == '-d'
+
 def d *s
+  return unless $DEBUG_FLAG
   $DEBUG ||= File.open('debug.log', 'a')
   $DEBUG.puts *s
   $DEBUG.flush
@@ -80,6 +83,7 @@ Dispel::Screen.open(colors: true) do |screen|
     when :"Ctrl+c"
       exit
     when 'P'
+      next unless $DEBUG_FLAG
       Curses.echo
       Curses.nl
       Curses.close_screen
@@ -88,6 +92,7 @@ Dispel::Screen.open(colors: true) do |screen|
       Curses.noecho
       Curses.nonl
     when 'g'
+      next unless $DEBUG_FLAG
       game.score.new_floor
       game.map = GenMap.new(game.time)
       game.player.on_new_map(game.map, $X, $Y, game.player.direction)

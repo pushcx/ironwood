@@ -20,3 +20,12 @@ Then run the game with:
 
 It assumes you have a terminal at least 80 columns wide that you never resize
 during gameplay. Have fun!
+
+Code
+----
+
+The code is generally terrible, and not reflective of my general coding style
+or quality. But it was fun as hell to code flat-out without regard for design, testability, or maintainability for a week.
+
+Run with the '-d' flag for access to the level generator (g) and Pry console
+(P).
