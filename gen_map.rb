@@ -31,7 +31,7 @@ class GenMap < Map
 
     dig_room top, bottom, left, right
 
-    rand(10..300).times.each do |i|
+    rand(10..350).times.each do |i|
       from = @rooms.sample
       distance = ROOM_DISTANCES.sample
       case rand(4)
@@ -125,7 +125,7 @@ class GenMap < Map
     end
     @width = @tiles.first.length
 
-    d_map
+    #d_map
 
     # update room coords for mob gen
     # this is beeroken
@@ -146,6 +146,7 @@ class GenMap < Map
     # drop treasure
     #d "#{@width}x#{@height}"
     #d_map
+    d 'adding treasure'
     rand(60..90).times do
       x, y = rand(0..@width-1),rand(0..@height-1)
       next unless available?(x, y)
@@ -157,31 +158,35 @@ class GenMap < Map
     end
     #d_map
 
-    rand(10..50).times do
-      x, y = rand(0..@width-1), rand(0..@height-1)
-      next unless available?(x, y)
+    d 'adding guards'
+    rand(10..20).times do
+      x = y = 0
+      x, y = rand(0..@width-1), rand(0..@height-1) unless available?(x, y)
       #d "random at #{x},#{y} #{@tiles[y][x]}"
       mobs << Guard.new(self, x, y, rand(0..7))
     end
 
     # add guards guarding guards :)
+    d 'adding guard guards'
     rand(3..8).times do
       mob = mobs.sample
       add_guard_guarding mob.x, mob.y
     end
 
     # make some guards patrol
-    x = y = 0
-    rand(1..5).times do
+    d 'adding patrol'
+    rand(2..10).times do
       mob = mobs.sample
       radius = 30
+      x = y = 0
       x, y = rand((mob.x-radius)..(mob.x+radius)), rand((mob.y-radius)..(mob.y+radius)) until available?(x, y)
       mob.order_patrol_to x, y
-      #d "#{mob.object_id} should patrol from #{mob.x},#{mob.y} to #{x},#{y}"
+      d "#{mob.object_id} should patrol from #{mob.x},#{mob.y} to #{x},#{y}"
     end
 
     #d_map
-    rand(3..6).times do
+    d 'adding trapdoors'
+    rand(2..5).times do
       x = y = 0
       x, y = rand(0..@width-1),rand(0..@height-1) until available?(x, y)
       drop_item Trapdoor.new(self, x, y)
@@ -192,7 +197,7 @@ class GenMap < Map
     x, y = [rand(0..@width-1), rand(0..@height-1)] while !available?(x,y)
     $X, $Y = x, y # terrible hack to make sure player is in bounds
 
-    #d_map
+    d_map
 
     # remove any mobs near the player to give breathing room
     ([0, (y - 8)].max..[@width - 1,(y + 8)].min).each do |y|
@@ -207,7 +212,14 @@ class GenMap < Map
   def add_guard_guarding(guard_x, guard_y)
     #d "add_guard_guarding(#{guard_x},#{guard_y})"
     x, y = 0,0
-    x, y = guard_x + rand(-5..5), guard_y + rand(-5..5) while !available?(x,y)
+    tries = 0
+    while !available?(x,y)
+      x, y = guard_x + rand(-5..5), guard_y + rand(-5..5)
+      if (tries += 1) > 20
+        d "failed to find a place to add a guard watching #{guard_x},#{guard_y}"
+        return
+      end
+    end
     #d "chose #{x},#{y} #{@tiles[y][x]}"
     guard = Guard.new(self, x, y, 0)
     guard.direction = guard.direction_to(guard_x, guard_y)

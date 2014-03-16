@@ -47,7 +47,13 @@ class Game
       mob.turn
       #d " - finished at #{mob.x},#{mob.y}"
 
-      @game_over = true if map.mobs.mob_at_player?
+      if mob = map.mobs.mob_at_player
+        raise "wtf #{player.x},#{player.y} - #{mob.x},#{mob.y}" unless player.x == mob.x and player.y == mob.y
+        @game_over = true
+      end
+    end
+    if @game_over
+      d "game over", player.to_yaml, map.mobs.select{|m| !m.player?}.map {|m| "#{m.x},#{m.y} #{m.state}" }
     end
     time.advance
   end

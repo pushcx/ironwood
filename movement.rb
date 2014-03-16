@@ -22,7 +22,8 @@ module Movement
   end
 
   def can_move?(direction)
-    !self.map.blocks_movement?(*dest(direction))
+    x, y = *dest(direction)
+    !self.map.blocks_movement?(x, y) or self.map.mobs.mob_at?(x, y)
   end
 
   def move(direction)
@@ -55,9 +56,11 @@ module Movement
     # bug in astar, when pathfinding to one square from current location it
     # will return just [dest] rather than include the origin like it does on
     # every other search
+    d "1x pathfinding bug: walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
+    return if result.empty?
     result.shift if result.first.x == self.x and result.first.y == self.y
     #d "xy #{result.first.x},#{result.first.y} dir #{direction_to(result.first.x, result.first.y)}"
-    d "that pathfinding bug you thought you fixed walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
+    d "2x pathfinding bug: walk_towards #{self.x},#{self.y} -> #{x},#{y}" if result.empty?
     return if result.empty? # already there
     move(direction_to(result.first.x, result.first.y))
   end

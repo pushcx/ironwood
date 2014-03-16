@@ -74,7 +74,7 @@ class Map
   
   # Should be a method on Tile.
   def blocks_movement?(x, y)
-    return (x < 0 or y < 0 or x >= @width or y >= @height or '#~'.include? tile(x, y))
+    return (x < 0 or y < 0 or x >= @width or y >= @height or '#~'.include? tile(x, y) or mobs.mob_at?(x, y))
   end
 
   def crop x, y, width, height

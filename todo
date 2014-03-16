@@ -39,7 +39,7 @@ x readme
 x guards that patrol
 x trapdoors
 x guards angry at finding bodies
-  bug: guards can walk into each other
+x bug: guards can walk into each other
 x scale number of guards to size of level
 x comment out debugger and map regen
   package for osx/windows?

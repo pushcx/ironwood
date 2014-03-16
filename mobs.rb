@@ -6,7 +6,7 @@ class Mobs
   attr_reader :list
 
   extend Forwardable
-  def_delegators :@list, :<<, :delete, :each, :select, :sample, :collect
+  def_delegators :@list, :<<, :delete, :each, :select, :sample, :collect, :map
 
   def initialize list=[]
     @list = list

@@ -121,7 +121,7 @@ Dispel::Screen.open(colors: true) do |screen|
       game.turn
     when *keys_to_directions.keys
       direction = keys_to_directions[key]
-      next unless game.player.can_move? direction
+      next unless game.player.can_move? direction 
       game.player.act :move
       game.player.move direction
       game.turn
