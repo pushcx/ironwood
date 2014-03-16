@@ -11,7 +11,9 @@ Ironwood directory, and run:
 
     bundle install
 
-To download and install all the game's dependencies. Then run the game with:
+...to download and install all the game's dependencies. You will probably need some kind of curses headers/libraries installed for this to work, but I honestly don't know what the package is called. Try `apt-get install libncurses` or `brew install ncurses` as appropriate.
+
+Then run the game with:
 
     bundle exec ./ironwood.rb
 

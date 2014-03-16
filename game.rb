@@ -23,7 +23,7 @@ class Game
 
     # player has moved onto mob to knock it out
     if mob = map.mobs.mob_at_player
-      return @game_over = true if mob.hunting? # can't knock out alert guards
+      return @game_over = true if mob.raging? or mob.hunting? # can't knock out alert guards
       score.guard
       map.mobs.delete mob
       map.drop_item Body.new(map, mob.x, mob.y)
