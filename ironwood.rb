@@ -70,7 +70,7 @@ keys_to_directions = {
 }
 
 at_exit do
-  $SCORE.print_final
+  $SCORE.print_final if $SCORE
 end
 Dispel::Screen.open(colors: true) do |screen|
   game = Game.new(screen.columns, screen.lines)

@@ -16,7 +16,6 @@ Type 's' to use a smokebomb to stun guards
 
 Type '>' on a staircase for the next floor down
 ^ Trapdoors drop you to the next floor,
-...but you can't see them when you're running
 
 Knock out guards by moving into them
 ...when they're not angry
