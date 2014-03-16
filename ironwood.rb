@@ -36,6 +36,7 @@ def d *s
   $DEBUG.puts *s
   $DEBUG.flush
 end
+d '-' * 40
 
 module Ironwood
 

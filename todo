@@ -40,7 +40,7 @@ x guards that patrol
 x trapdoors
 x guards angry at finding bodies
   bug: guards can walk into each other
-  scale number of guards to size of level
+x scale number of guards to size of level
 x comment out debugger and map regen
   package for osx/windows?
   bug: astar bug that sometimes return short list, see walk_towards

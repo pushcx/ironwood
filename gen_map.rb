@@ -4,7 +4,7 @@ module Ironwood
 
 MIN_DIM = 2
 MAX_DIM = 9
-ROOM_DISTANCES = [1,1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,4,4,5]
+ROOM_DISTANCES = [1,1,1,2,2,2,2,2,2,2,2,3,3,3,3,4,4,5]
 
 Room = Struct.new :top, :bottom, :left, :right
 
@@ -20,9 +20,9 @@ class GenMap < Map
     @sounds = {}
 
     @rooms = []
-    @width, @height = rand(20..500), rand(20..400)
+    @width, @height = rand(60..100), rand(60..100)
     @tiles = Array.new(@height) { '#' * @width }
-    #d "width #{width} height #{height}"
+    d "width #{width} height #{height}"
 
     top    = rand(1..@height-MIN_DIM-2)
     bottom = top + rand(MIN_DIM..[MAX_DIM, @height - top - 2].min)
@@ -31,11 +31,12 @@ class GenMap < Map
 
     dig_room top, bottom, left, right
 
-    rand(60..600).times.each do |i|
+    rand(10..300).times.each do |i|
       from = @rooms.sample
+      distance = ROOM_DISTANCES.sample
       case rand(4)
       when 0 # top
-        bottom = from.top - ROOM_DISTANCES.sample
+        bottom = from.top - distance
         next if bottom - MIN_DIM <= 0
         height = rand(MIN_DIM..[MAX_DIM, bottom - 1].min)
         top = bottom - height
@@ -53,7 +54,7 @@ class GenMap < Map
           @tiles[bottom + 1][x] = '+'
         end
       when 1 # bottom
-        top = from.bottom + ROOM_DISTANCES.sample
+        top = from.bottom + distance
         height = rand(MIN_DIM..MAX_DIM)
         bottom = top + height
         next if bottom >= @height - 1
@@ -71,7 +72,7 @@ class GenMap < Map
           @tiles[top - 1][x] = '+'
         end
       when 2 # left
-        right = from.left - ROOM_DISTANCES.sample
+        right = from.left - distance
         width = rand(MIN_DIM..MAX_DIM)
         left = right - width
         next if left <= 0
@@ -89,7 +90,7 @@ class GenMap < Map
           @tiles[y][right + 1] = '+'
         end
       when 3 # right
-        left = from.right + ROOM_DISTANCES.sample
+        left = from.right + distance
         width = rand(MIN_DIM..MAX_DIM)
         right = left + width
         next if right >= @width - 1
@@ -124,6 +125,8 @@ class GenMap < Map
     end
     @width = @tiles.first.length
 
+    d_map
+
     # update room coords for mob gen
     # this is beeroken
     #@rooms.each_with_index do |room, i|
@@ -154,7 +157,7 @@ class GenMap < Map
     end
     #d_map
 
-    rand(50..150).times do
+    rand(10..50).times do
       x, y = rand(0..@width-1), rand(0..@height-1)
       next unless available?(x, y)
       #d "random at #{x},#{y} #{@tiles[y][x]}"
@@ -216,6 +219,7 @@ class GenMap < Map
   end
 
   def d_map
+    return unless $DEBUG_FLAG
     @tiles.each_with_index do |row, y|
       row.split('').each_with_index do |tile, x|
         if items.item_at? x, y
