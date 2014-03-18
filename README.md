@@ -25,7 +25,13 @@ Code
 ----
 
 The code is generally terrible, and not reflective of my general coding style
-or quality. But it was fun as hell to code flat-out without regard for design, testability, or maintainability for a week.
+or quality. But it was fun as hell to code flat-out without regard for
+encapsulation, design, testability, or maintainability for a week. By the end
+of the week it was a good reminder why I don't code like that.
 
 Run with the '-d' flag for access to the level generator (g) and Pry console
 (P).
+
+Thanks to italica and snarky for their invaluable playtesting and advice.
+Ironwood is both playable and fun because of them; where it is neither it is
+entirely my fault.

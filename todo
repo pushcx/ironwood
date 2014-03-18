@@ -42,7 +42,8 @@ x guards angry at finding bodies
 x bug: guards can walk into each other
 x scale number of guards to size of level
 x comment out debugger and map regen
-  package for osx/windows?
+  update 7drl site with success
+  package for osx/windows? (crate, ocra, releasey)
   bug: astar bug that sometimes return short list, see walk_towards
 
   noisemakers

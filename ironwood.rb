@@ -8,6 +8,7 @@ require 'pry'
 require 'yaml'
 
 require_relative 'body'
+require_relative 'color_hack'
 require_relative 'constants'
 require_relative 'game'
 require_relative 'gen_map'
